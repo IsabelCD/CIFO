@@ -58,6 +58,7 @@ hours = {
 
 
 
+
 def get_hours(duration):
     hour, minute = map(int, duration.split(':'))
     return hour + (minute / 60)
@@ -69,6 +70,8 @@ def check_students(row, exam):
         if (i is not None):
             students_for_exam = df_en[df_en['exam'] == i]['student'].tolist()
             total_students = total_students + students_for_exam
+    total_students = total_students + df_en[df_en['exam'] == exam]['student'].tolist()
+
 
     if len(total_students) == len(set(total_students)):
         return True
@@ -141,12 +144,14 @@ def check_combo_timetable(exam, coincidences, timetable, name = False):
                 return True
             else:
                 if name:
+                    print(combo_string)
                     return combo_string, i
                 else:
                     return False
 
 
-
+countrow = 0
+combolist = []
 #creates population
 while len(pop) <1:
     #initialization
@@ -158,6 +163,7 @@ while len(pop) <1:
         exam_name = df_exam.loc[i][0]
         exam_hours = get_hours(df_exam.loc[i]['duration'])
         room_capacity = df_en['exam'].value_counts()[df_exam.loc[i][0]]
+
 
         if check_exam_coincidences(df_exam.loc[i][0], coincidences):
             if check_combo_timetable(df_exam.loc[i][0], coincidences, timetable):
@@ -171,8 +177,12 @@ while len(pop) <1:
                 room_capacity = 0
                 for exam in coincidences[combo_index]:
                     room_capacity = room_capacity + df_en['exam'].value_counts()[df_exam[df_exam['exam']==exam]['exam'].values[0]]
+                countrow = countrow + 1
+                combolist.append(exam_name)
 
         runit, roomhoursAvailable = is_there_any_rooms_left(timetable, exam_hours, room_capacity)
+
+
 
         while hours_room:
             if roomhoursAvailable:
@@ -181,7 +191,7 @@ while len(pop) <1:
                 #r = random.choice(roomsAvailable)
                 roomhoursAvailable.remove(hr)
 
-                print("condition 4:", check_students(timetable[hr[0]], exam_name))
+                print("condition:", check_students(timetable[hr[0]], exam_name))
                 print("--------------------------------------------------------------------------------------")
 
                 if check_students(timetable[hr[0]], exam_name):
@@ -196,21 +206,14 @@ while len(pop) <1:
                 while not r:
                     morethanone = multiple_rooms(timetable, exam_hours, room_capacity,num_rooms, exam_name)
                     num_rooms = num_rooms + 1
-                    print('num of rooms', num_rooms, 'CAPACITY REQUIRED', room_capacity)
-                    print(morethanone)
                     if not all(not value for value in morethanone.values() if value):
-                        print('entrou')
                         while not r:
                             h = random.choice(list(morethanone.keys()))
                             try:
                                 r = random.choice(morethanone[h])
                             except:
                                 r = []
-                    else:
-                        for inx, f in enumerate(timetable):
-                            print(inx)
-                            print(f)
-                            print()
+
 
 
 
@@ -219,16 +222,21 @@ while len(pop) <1:
 
                 if check_students(timetable[h], exam_name):
                     for i in r:
-                        print(timetable)
                         timetable[h][i] = exam_name
                     hours_room = False
-                    print(timetable)
+                    #print(timetable)
 
-        pop.append(timetable)
+    pop.append(timetable)
 
-print(pop)
+for i in pop:
+    for indx, horario in enumerate(i):
+        print('horario', hours[indx])
+        print(horario)
+        print()
 
-
+print(countrow)
+print(len(coincidences), 'how many coincidences there are')
+print(sorted(combolist))
 
 
 
