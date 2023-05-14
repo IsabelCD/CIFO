@@ -6,7 +6,35 @@ from copy import deepcopy
 from charles.crossover import cycle_xo
 from charles.mutation import swap_mutation
 from charles.selection import tournament_sel, fps
+from data_import import *
 
+# Sample input data
+representation = [
+    [{'day': 'Monday', 'time': '10:00am'}, 'exam1'],
+    [{'day': 'Monday', 'time': '2:00pm'}, 'exam2'],
+    [{'day': 'Tuesday', 'time': '9:00am'}, 'exam3'],
+    [{'day': 'Tuesday', 'time': '1:00pm'}, 'exam4'],
+    [{'day': 'Wednesday', 'time': '11:00am'}, 'exam5'],
+    [{'day': 'Wednesday', 'time': '3:00pm'}, 'exam6'],
+]
+
+exams_by_day = {}
+for exam in representation:
+    day = exam[0]["day"]
+    code = exam[1]
+    if day in exams_by_day:
+        exams_by_day[day].append(code)
+    else:
+        exams_by_day[day] = [code]
+
+result = list(exams_by_day.values())
+
+
+print(result)
+# Output: [['exam1', 'exam2'], ['exam3', 'exam4'], ['exam5', 'exam6']]
+
+
+room_capacity = df_en['exam'].value_counts()[df_exam.loc[i][0]]
 
 def get_fitness(self):
     """A simple objective function to calculate distances
@@ -16,6 +44,12 @@ def get_fitness(self):
         int: the total distance of the path
     """
     fitness = 0
+    for time, room in self.representation:
+        
+
+        fitness= i + j
+
+    
     for i in range(len(self.representation)):
         fitness += distance_matrix[self.representation[i - 1]][self.representation[i]]
     return int(fitness)
