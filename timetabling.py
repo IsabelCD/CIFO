@@ -8,34 +8,6 @@ from charles.mutation import swap_mutation
 from charles.selection import tournament_sel, fps
 from data_import import *
 
-# Sample input data
-representation = [
-    [{'day': 'Monday', 'time': '10:00am'}, 'exam1'],
-    [{'day': 'Monday', 'time': '2:00pm'}, 'exam2'],
-    [{'day': 'Tuesday', 'time': '9:00am'}, 'exam3'],
-    [{'day': 'Tuesday', 'time': '1:00pm'}, 'exam4'],
-    [{'day': 'Wednesday', 'time': '11:00am'}, 'exam5'],
-    [{'day': 'Wednesday', 'time': '3:00pm'}, 'exam6'],
-]
-
-exams_by_day = {}
-for exam in representation:
-    day = exam[0]["day"]
-    code = exam[1]
-    if day in exams_by_day:
-        exams_by_day[day].append(code)
-    else:
-        exams_by_day[day] = [code]
-
-result = list(exams_by_day.values())
-
-
-print(result)
-# Output: [['exam1', 'exam2'], ['exam3', 'exam4'], ['exam5', 'exam6']]
-
-
-room_capacity = df_en['exam'].value_counts()[df_exam.loc[i][0]]
-
 def get_fitness(self):
     """A simple objective function to calculate distances
     for the TSP problem.
@@ -43,16 +15,39 @@ def get_fitness(self):
     Returns:
         int: the total distance of the path
     """
-    fitness = 0
-    for time, room in self.representation:
+    # Create a dictionary with days as keys and exam codes as values
+    #using a dictionary comprehension is more efficient than with an if statement  on a list
+    exams_by_day = {}
+    for exam in self.representation:
+        day = exam[0]["day"]
+        code = exam[1]
+        exams_by_day.setdefault(day, []).append(code)
+
+    # Convert the dictionary values to a list
+    exams_by_day = list(exams_by_day.values())
+
+    # Create an empty list to hold nº students with multiple exams in each day
+    student_counts = []
+
+    # Iterate over each sub-list in the result list
+    for exam_list in exams_by_day:
         
+        # Filter the dataframe to only include rows with the current day's exams
+        day_en = df_en[df_en['exam'].isin(exam_list)]
+        
+        # Get the list of students who took the exams on the current day
+        students = list(day_en['student'])
+        
+        # Calculate the difference between the number of students who took the exams and the number of unique students
+        diff = len(students) - len(set(students))
+        
+        # Add the result to the student_counts list
+        student_counts.append(diff)
 
-        fitness= i + j
-
+    # Calculate the fitness as the sum of the student counts
+    fitness = sum(student_counts)
     
-    for i in range(len(self.representation)):
-        fitness += distance_matrix[self.representation[i - 1]][self.representation[i]]
-    return int(fitness)
+    return fitness 
 
 
 def get_neighbours(self):
