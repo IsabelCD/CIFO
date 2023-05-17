@@ -42,14 +42,12 @@ merged= pd.merge(df_exam, df_en, how="inner", on='exam')
 #print(merged)
 
 ####COINCIDENCES####
-coincidences = [["C13563E1", "C13571E1", "C13572E1"],
-                ["LK44FAE1", "LK44GAE1", "LK44SAE1"],
+coincidences = [["LK44FAE1", "LK44GAE1", "LK44SAE1"],
                 ["LKC3FAE1", "LKC3GAE1", "LKC3SAE1", "LKC3RAE1"],
                 ["C81IAAE1", "C81J1AE2", "C81J4AE2", "C81HAAE1"],
                 ["C81HBAE1", "C81IBAE1", "C81J1AE1", "C81J2AE1", "C81J3AE1"],
                 ["C81HCAE1", "C81ICAE1", "C81J2AE2" , "C81J4AE1", "C81J5AE1"],
                 ["C81HDAE1", "C81IDAE1", "C81J3AE2", "C81J5AE2"],
-                ["C81MJAE1", "C81MSAE1", "C82MCPE1"],
                 ["C82BCSE1", "C82BUAE1"],
                 ["C82MHAE1", "C82MJAE1"],
                 ["R23102E1", "R23104E1"],
