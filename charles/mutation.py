@@ -1,5 +1,5 @@
 from random import randint, sample
-print('hello world')
+
 
 def binary_mutation(individual):
     """Binary mutation for a GA individual
