@@ -1,11 +1,16 @@
 from pop_creation import *
+#import random
+#from data_import import *
 
 
+
+
+
+    return missing_exams
 
 def check_exam_timeslots(offspring):
     scheduled_exams = set()
     duplicates = set()
-
     for ind, timeslot in enumerate(offspring):
         if ind == 0:
             scheduled_exams.update(timeslot)
@@ -17,14 +22,6 @@ def check_exam_timeslots(offspring):
 
     return duplicates
 
-
-def check_all_exams_scheduled(parent, offspring):
-    parent_exams = set(itertools.chain(*parent))
-    offspring_exams = set(itertools.chain(*offspring))
-    return parent_exams == offspring_exams
-
-
-def get_missing_exams(parent, offspring):
     parent_exams = set(itertools.chain(*parent))
     offspring_exams = set(itertools.chain(*offspring))
     missing_exams = parent_exams - offspring_exams
@@ -56,6 +53,16 @@ def assign_exam(timetable, exam):
 
     return timetable
 
+def get_item(object, item):
+    for i in object:
+
+        try:
+            indx_rooms = i.index(item)
+            indx_time = object.index(i)
+            break
+        except:
+            continue
+    return indx_time, indx_rooms
 
 def single_point_slots_co(parent1, parent2, crossover_prob):
     offspring1 = parent1.copy()  # Create copies of parents
@@ -79,8 +86,8 @@ def single_point_slots_co(parent1, parent2, crossover_prob):
         for exam in missing_exams:
             offspring2 = assign_exam(exam, offspring2)
 
-    return offspring1, offspring2
 
+    return offspring1, offspring2
 
 def cycle_xo(p1, p2):
     """Implementation of cycle crossover.
@@ -93,23 +100,51 @@ def cycle_xo(p1, p2):
         Individuals: Two offspring, resulting from the crossover.
     """
     # offspring placeholders
-    offspring1 = [None] * len(p1)
-    offspring2 = [None] * len(p1)
+    offspring1 = [[None] * len(p1[0]) for _ in range(len(p1))]
+    offspring2 = [[None] * len(p1[0]) for _ in range(len(p1))]
+    parents_exam = list(set(list(itertools.chain(*p1)) + list(itertools.chain(*p2))))
+    print(parents_exam)
 
-    while None in parents_exam:
-        index = offspring1.index(None)
-        val1 = p1[index]
-        val2 = p2[index]
+    parents_exam.remove(None)
+    counter = 0
 
-        # copy the cycle elements
-        while val1 != val2:
-            offspring1[index] = p1[index]
-            offspring2[index] = p2[index]
-            parents_exam.remove(val1)
-            val1 = p2[index]
-            val2 = p1.index(val1)
+    while parents_exam:
+        index_time, index_rooms = get_item(offspring1, None)
+        val1 = p1[index_time][index_rooms]
+        val2 = p2[index_time][index_rooms]
+        print('iniciais', index_time, index_rooms)
+        parents = True
 
-        # copy the rest
+        if counter % 2 == 0 :
+            # copy the cycle elements
+            while parents:
+                offspring1[index_time][index_rooms] = val1
+                offspring2[index_time][index_rooms] = val2
+                if val1 in parents_exam:
+                    parents_exam.remove(val1)
+                else:
+                    parents = False
+                val1 = p2[index_time][index_rooms]
+                index_time, index_rooms = get_item(p1, val1)
+                val2 = p2[index_time][index_rooms]
+
+        else:
+            while parents:
+                offspring1[index_time][index_rooms] = val2
+                offspring2[index_time][index_rooms] = val1
+                if val1 in parents_exam:
+                    print(counter, 'valor', val1)
+                    parents_exam.remove(val1)
+                else:
+                    parents = False
+                val1 = p2[index_time][index_rooms]
+                index_time, index_rooms = get_item(p1, val1)
+                val2 = p2[index_time][index_rooms]
+
+
+        counter = counter + 1
+
+        # copy the rest54
         for element in offspring1:
             if element is None:
                 index = offspring1.index(None)
@@ -121,6 +156,7 @@ def cycle_xo(p1, p2):
 
 
 if __name__ == '__main__':
-    p1, p2 = [2, 7, 4, 3, 1, 5, 6, 9, 8], [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    p1, p2 = [[2, 7, 4], [3, 1, 5], [6, 9, 8]],\
+             [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     o1, o2 = cycle_xo(p1, p2)
     print(o1, o2)
