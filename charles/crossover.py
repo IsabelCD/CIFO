@@ -1,10 +1,19 @@
+
 from pop_creation import *
-#import random
-#from data_import import *
+import itertools
 
 
+def check_all_exams_scheduled(parent, offspring):
+    parent_exams = set(itertools.chain(*parent))
+    offspring_exams = set(itertools.chain(*offspring))
+
+    return parent_exams == offspring_exams
 
 
+def get_missing_exams(parent, offspring):
+    parent_exams = set(itertools.chain(*parent))
+    offspring_exams = set(itertools.chain(*offspring))
+    missing_exams = parent_exams - offspring_exams
 
     return missing_exams
 
@@ -21,13 +30,6 @@ def check_exam_timeslots(offspring):
             scheduled_exams.add(exam)
 
     return duplicates
-
-    parent_exams = set(itertools.chain(*parent))
-    offspring_exams = set(itertools.chain(*offspring))
-    missing_exams = parent_exams - offspring_exams
-
-    return missing_exams
-
 
 def assign_exam(timetable, exam):
     roomsAvailable = []
