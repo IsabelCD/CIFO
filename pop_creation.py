@@ -9,6 +9,7 @@ size = 30  # pop
 # function that checks if there are no students making exams at the same time
 def check_students(row, exam, help = False):
     total_students = []
+    row = list(set(row))
     for i in row:
         # if the exam is actually a combination of exams
         if (i is not None) and i.startswith("COMBO"):
@@ -23,23 +24,17 @@ def check_students(row, exam, help = False):
         elif (i is not None):
             students_for_exam = df_en[df_en['exam'] == i]['student'].tolist()
             total_students = total_students + students_for_exam
-
-
     # add the exam for which we are checking
     for i in exam:
         total_students = total_students + df_en[df_en['exam'] == i]['student'].tolist()
     if len(total_students) == len(set(total_students)):
-        if help:
-            print(exam)
-            print(len(total_students))
-            print(len(set(total_students)))
 
         return True
     else:
-        if help:                            
-            print(exam)                     
-            print(len(total_students))      
-            print(len(set(total_students))) 
+        #if help:
+        #    print(exam)
+        #    print(len(total_students))
+        #    print(len(set(total_students)))
         return False
 
 
@@ -50,7 +45,12 @@ def is_there_any_rooms_left(timetable, examcapacity):
     for key, value in rooms.items():
         if value[1] > examcapacity:
             roomsAvailable.append(key)
-
+    if examcapacity <= 40:
+        for i in [0, 8, 13, 14, 15]:
+            try:
+                roomsAvailable.remove(i)
+            except:
+                continue
     for i in roomsAvailable:
         for j in range(len(timetable)):
             if timetable[j][i] is None:
@@ -63,9 +63,13 @@ def multiple_rooms(timetable, examcapacity, numrooms, exam):
     hoursAvailable = []
     possible_combos = {}
     for key, value in hours.items():
-        if check_students(timetable[key], exam):
+        #print("key", key, 'value', value, check_students(timetable[key], exam, help=True), 'exam', exam)
+        if check_students(timetable[key], exam, help=True):
             hoursAvailable.append(key)
-    print('this are the hours available', hoursAvailable)
+    print('this are the hours available', hoursAvailable, examcapacity, exam)
+    if numrooms>=4:
+        for i in hoursAvailable:
+            print('horario', i, timetable[i])
 
     for i in hoursAvailable:
         # matrix that has all the index that are none of hour i
@@ -155,6 +159,8 @@ def create_individual(rooms, hours, df_exam, df_en, coincidences):
                 print("condition:", check_students(timetable[hr[0]], exam_collection))
 
                 if check_students(timetable[hr[0]], exam_collection) and timetable[hr[0]][hr[1]] is None:
+                    if room_capacity <= 15:
+                        print('small exam', hr[1])
                     print("--------------------------------------------------------------------------------------")
                     timetable[hr[0]][hr[1]] = exam_name
                     hours_room = False
@@ -164,12 +170,12 @@ def create_individual(rooms, hours, df_exam, df_en, coincidences):
                 print('começou')
                 morethanone = multiple_rooms(timetable, room_capacity, num_rooms, exam_collection)
                 while all(not value for value in morethanone.values() if value):
-                    morethanone = multiple_rooms(timetable, room_capacity, num_rooms, exam_name)
+                    morethanone = multiple_rooms(timetable, room_capacity, num_rooms, exam_collection)
                     num_rooms = num_rooms + 1
                 num_rooms = num_rooms + 1
                 print('exam', i)
                 r = []
-                while (not all(not value for value in morethanone.values() if value)) and hours_room:
+                while hours_room:
                     print(num_rooms)
                     print(morethanone)
                     h = random.choice(list(morethanone.keys()))
@@ -186,8 +192,7 @@ def create_individual(rooms, hours, df_exam, df_en, coincidences):
                     print("condition:", check_students(timetable[h], exam_collection, help= True), room_capacity)
                     print("--------------------------------------------------------------------------------------")
 
-                    if check_students(timetable[h], exam_collection):
-
+                    if check_students(timetable[h], exam_collection) and r:
                         for i in r:
                             timetable[h][i] = exam_name
                         print('já estaa')
@@ -195,7 +200,7 @@ def create_individual(rooms, hours, df_exam, df_en, coincidences):
                         print(all(not value for value in morethanone.values() if value))
                         print((not all(not value for value in morethanone.values() if value)))
                         print(hours_room)
-                        print((not all(not value for value in morethanone.values() if value)) or hours_room)
+                        print((not all(not value for value in morethanone.values() if value)) and hours_room)
                         # print(timetable)
     print(combo_count)
     return timetable
