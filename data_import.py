@@ -8,7 +8,7 @@ col_widths = [8, 42, 4, 3]
 col_names = ['exam', 'description', 'duration', 'department']
 
 # Read the text file
-df_exam = pd.read_fwf('./exams', widths=col_widths, names=col_names)
+df_exam = pd.read_fwf('../exams', widths=col_widths, names=col_names)
 
 # Print the dataframe
 #print(df_exam)
@@ -19,7 +19,7 @@ df_exam = pd.read_fwf('./exams', widths=col_widths, names=col_names)
 ####STUDENTS dataset####
 col_widths = [10, 4]
 col_names = ['student', 'course']
-df_st = pd.read_fwf('./students', widths=col_widths, names=col_names)
+df_st = pd.read_fwf('../students', widths=col_widths, names=col_names)
 # Print the dataframe
 #print(df_st)
 
@@ -30,7 +30,7 @@ df_st = pd.read_fwf('./students', widths=col_widths, names=col_names)
 ####ENROLMENTS dataset##
 col_widths = [10, 9]
 col_names = ['student', 'exam']
-df_en = pd.read_fwf('./enrolements', widths=col_widths, names=col_names)
+df_en = pd.read_fwf('../enrolements', widths=col_widths, names=col_names)
 # Print the dataframe
 #print(df_en)
 
@@ -72,7 +72,23 @@ coincidences = [["LK44FAE1", "LK44GAE1", "LK44SAE1"],
                 ["L11101E1", "L11102E1"],
                 ["L11110E1", "L11111E1"],
                 ["L11130E1", "L11140E1"],
-                ["M11351E1",  "M11451E1"]
+                ["M11351E1",  "M11451E1"],
+                ['Q4A106E1', "Q4A219E1"],
+                ["K4C280E1", "K4C290E1"],
+                ["D22227E1", "D23336E1"],
+                ["Q82024E1", "Q82028E1"],
+                ["G53LCTE1", "G5BSBBE1"],
+                ["V12116E1", "V13111E1"],
+                ["H3CFM3E1", "H3CTSEE1"],
+                ["F321E4E1", "F331X5E1"],
+                ["C81MJAE1", "C82MCPE1"],
+                ["R4A119E1", "R4B107E1"],
+                ["LK10KBE1","LKB2JAE1","LKB2SAE1"],
+                ["LKA1IAE1","LKA1JAE1","LKA1RAE1"],
+                ["M33036E1","M3B049E1","M3B062E1"],
+                ["Q8B075E1","Q8B076E1","Q8B341E1"],
+                ["B12320E1","B13103E1","D23315E1", "D23360E1"],
+                ["F321C6E1","F321Q9E1","F331M9E1", "F331X3E1", "F331Z8E1"],
 ]
 
 
@@ -99,51 +115,56 @@ rooms= {0: ['TRENT-HALL', 125],
 
 hours = {
     0: {'day': '23-01-1995', 'time': '9:00', 'duration': 3},
-    1: {'day': '23-01-1995', 'time': '13:30', 'duration': 2},
-    2: {'day': '23-01-1995', 'time': '16:30', 'duration': 2},
+    1: {'day': '23-01-1995', 'time': '13:30', 'duration': 3},
+    2: {'day': '23-01-1995', 'time': '16:30', 'duration': 3},
     3: {'day': '24-01-1995', 'time': '9:00', 'duration': 3},
-    4: {'day': '24-01-1995', 'time': '13:30', 'duration': 2},
-    5: {'day': '24-01-1995', 'time': '16:30', 'duration': 2},
+    4: {'day': '24-01-1995', 'time': '13:30', 'duration': 3},
+    5: {'day': '24-01-1995', 'time': '16:30', 'duration': 3},
     6: {'day': '25-01-1995', 'time': '9:00', 'duration': 3},
-    7: {'day': '25-01-1995', 'time': '13:30', 'duration': 2},
-    8: {'day': '25-01-1995', 'time': '16:30', 'duration': 2},
+    7: {'day': '25-01-1995', 'time': '13:30', 'duration': 3},
+    8: {'day': '25-01-1995', 'time': '16:30', 'duration': 3},
     9: {'day': '26-01-1995', 'time': '9:00', 'duration': 3},
-    10: {'day': '26-01-1995', 'time': '13:30', 'duration': 2},
-    11: {'day': '26-01-1995', 'time': '16:30', 'duration': 2},
+    10: {'day': '26-01-1995', 'time': '13:30', 'duration': 3},
+    11: {'day': '26-01-1995', 'time': '16:30', 'duration': 3},
     12: {'day': '27-01-1995', 'time': '9:00', 'duration': 3},
-    13: {'day': '27-01-1995', 'time': '13:30', 'duration': 2},
-    14: {'day': '27-01-1995', 'time': '16:30', 'duration': 2},
+    13: {'day': '27-01-1995', 'time': '13:30', 'duration': 3},
+    14: {'day': '27-01-1995', 'time': '16:30', 'duration': 3},
     15: {'day': '28-01-1995', 'time': '9:00', 'duration': 3},
     16: {'day': '30-01-1995', 'time': '9:00', 'duration': 3},
-    17: {'day': '30-01-1995', 'time': '13:30', 'duration': 2},
-    18: {'day': '30-01-1995', 'time': '16:30', 'duration': 2},
+    17: {'day': '30-01-1995', 'time': '13:30', 'duration': 3},
+    18: {'day': '30-01-1995', 'time': '16:30', 'duration': 3},
     19: {'day': '31-01-1995', 'time': '9:00', 'duration': 3},
-    20: {'day': '31-01-1995', 'time': '13:30', 'duration': 2},
-    21: {'day': '31-01-1995', 'time': '16:30', 'duration': 2},
+    20: {'day': '31-01-1995', 'time': '13:30', 'duration': 3},
+    21: {'day': '31-01-1995', 'time': '16:30', 'duration': 3},
     22: {'day': '01-02-1995', 'time': '9:00', 'duration': 3},
-    23: {'day': '01-02-1995', 'time': '13:30', 'duration': 2},
-    24: {'day': '01-02-1995', 'time': '16:30', 'duration': 2},
+    23: {'day': '01-02-1995', 'time': '13:30', 'duration': 3},
+    24: {'day': '01-02-1995', 'time': '16:30', 'duration': 3},
     25: {'day': '02-02-1995', 'time': '9:00', 'duration': 3},
-    26: {'day': '02-02-1995', 'time': '13:30', 'duration': 2},
-    27: {'day': '02-02-1995', 'time': '16:30', 'duration': 2},
+    26: {'day': '02-02-1995', 'time': '13:30', 'duration': 3},
+    27: {'day': '02-02-1995', 'time': '16:30', 'duration': 3},
     28: {'day': '03-02-1995', 'time': '9:00', 'duration': 3},
-    29: {'day': '03-02-1995', 'time': '13:30', 'duration': 2},
-    30: {'day': '03-02-1995', 'time': '16:30', 'duration': 2},
+    29: {'day': '03-02-1995', 'time': '13:30', 'duration': 3},
+    30: {'day': '03-02-1995', 'time': '16:30', 'duration': 3},
     31: {'day': '04-02-1995', 'time': '9:00', 'duration': 3},
     32: {'day': '06-02-1995', 'time': '9:00', 'duration': 3},
-    33: {'day': '06-02-1995', 'time': '13:30', 'duration': 2},
-    34: {'day': '06-02-1995', 'time': '16:30', 'duration': 2},
+    33: {'day': '06-02-1995', 'time': '13:30', 'duration': 3},
+    34: {'day': '06-02-1995', 'time': '16:30', 'duration': 3},
     35: {'day': '07-02-1995', 'time': '9:00', 'duration': 3},
-    36: {'day': '07-02-1995', 'time': '13:30', 'duration': 2},
-    37: {'day': '07-02-1995', 'time': '16:30', 'duration': 2},
+    36: {'day': '07-02-1995', 'time': '13:30', 'duration': 3},
+    37: {'day': '07-02-1995', 'time': '16:30', 'duration': 3},
     38: {'day': '08-02-1995', 'time': '9:00', 'duration': 3},
-    39: {'day': '08-02-1995', 'time': '13:30', 'duration': 2},
-    40: {'day': '08-02-1995', 'time': '16:30', 'duration': 2},
+    39: {'day': '08-02-1995', 'time': '13:30', 'duration': 3},
+    40: {'day': '08-02-1995', 'time': '16:30', 'duration': 3},
     41: {'day': '09-02-1995', 'time': '9:00', 'duration': 3},
-    42: {'day': '09-02-1995', 'time': '13:30', 'duration': 2},
-    43: {'day': '09-02-1995', 'time': '16:30', 'duration': 2},
+    42: {'day': '09-02-1995', 'time': '13:30', 'duration': 3},
+    43: {'day': '09-02-1995', 'time': '16:30', 'duration': 3},
     44: {'day': '10-02-1995', 'time': '9:00', 'duration': 3},
-    45: {'day': '10-02-1995', 'time': '13:30', 'duration': 2},
-    46: {'day': '10-02-1995', 'time': '16:30', 'duration': 2},
-    47: {'day': '11-02-1995', 'time': '9:00', 'duration': 3}
+    45: {'day': '10-02-1995', 'time': '13:30', 'duration': 3},
+    46: {'day': '10-02-1995', 'time': '16:30', 'duration': 3},
+    47: {'day': '11-02-1995', 'time': '9:00', 'duration': 3},
+    48: {'day': '13-02-1995', 'time': '9:00', 'duration': 3},
+    49: {'day': '13-02-1995', 'time': '13:30', 'duration': 3},
+    50: {'day': '13-02-1995', 'time': '16:30', 'duration': 3},
 }
+
+

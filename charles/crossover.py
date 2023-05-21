@@ -9,7 +9,6 @@ def check_all_exams_scheduled(parent, offspring):
 
     return parent_exams == offspring_exams
 
-
 def get_missing_exams(parent, offspring):
     parent_exams = set(itertools.chain(*parent))
     offspring_exams = set(itertools.chain(*offspring))
@@ -36,20 +35,19 @@ def assign_exam(timetable, exam):
     hoursAvailable = []
     select_index = list(np.where(df_exam["exam"] == True)[0])
     examcapacity = df_en['exam'].value_counts()[exam]
-    examhours = get_hours(df_exam.loc[select_index]['duration'])
 
     for key, value in rooms.items():
         if value[1] > examcapacity:
             roomsAvailable.append(key)
 
     for key, value in hours.items():
-        if value['duration'] >= examhours:
-            hoursAvailable.append(key)
+        hoursAvailable.append(key)
+
     exam_inside = True
     while exam_inside:
         room = random.choice(roomsAvailable)
         timeslot = random.choice(hoursAvailable)
-        if timetable[timeslot][room] == None and check_students(timetable[timeslot], exam):
+        if (timetable[timeslot][room] is None) and check_students(timetable[timeslot], exam):
             timetable[timeslot][room] = exam
             exam_inside = False
 
@@ -57,7 +55,6 @@ def assign_exam(timetable, exam):
 
 def get_item(object, item):
     for i in object:
-
         try:
             indx_rooms = i.index(item)
             indx_time = object.index(i)
@@ -72,10 +69,9 @@ def single_point_slots_co(parent1, parent2, crossover_prob):
 
     timeslots = len(parent1)
     crossover_point = random.randint(1, num_rooms - 1)  # Select crossover point
-    choosen_duration = random.choice([2, 3])
+
     # Swap room assignments after the crossover point
     for time in range(crossover_point, timeslots):
-        if hours[time][duration] == choosen_duration:
             offspring1[time], offspring2[time] = parent2[time][i], parent1[time][i]
 
     # repair system
@@ -117,7 +113,7 @@ def cycle_xo(p1, p2):
         print('iniciais', index_time, index_rooms)
         parents = True
 
-        if counter % 2 == 0 :
+        if counter % 2 == 0:
             # copy the cycle elements
             while parents:
                 offspring1[index_time][index_rooms] = val1
@@ -158,7 +154,7 @@ def cycle_xo(p1, p2):
 
 
 if __name__ == '__main__':
-    p1, p2 = [[2, 7, 4], [3, 1, 5], [6, 9, 8]],\
+    p1, p2 = [[2, 7, 4], [3, 5, 1], [6, 9, 8]],\
              [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     o1, o2 = cycle_xo(p1, p2)
     print(o1, o2)

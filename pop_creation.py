@@ -2,9 +2,6 @@ import random
 from data_import import *
 import itertools
 
-# variables to be used
-size = 30  # pop
-
 
 # function that checks if there are no students making exams at the same time
 def check_students(row, exam, help = False):
@@ -202,7 +199,6 @@ def create_individual(rooms, hours, df_exam, df_en, coincidences):
                         print(hours_room)
                         print((not all(not value for value in morethanone.values() if value)) and hours_room)
                         # print(timetable)
-    print(combo_count)
     return timetable
 
 
