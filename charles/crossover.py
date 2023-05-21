@@ -63,7 +63,7 @@ def get_item(object, item):
             continue
     return indx_time, indx_rooms
 
-def single_point_slots_co(parent1, parent2, crossover_prob):
+def single_point_slots_co(parent1, parent2):
     offspring1 = parent1.copy()  # Create copies of parents
     offspring2 = parent2.copy()
 

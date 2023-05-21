@@ -8,7 +8,7 @@ col_widths = [8, 42, 4, 3]
 col_names = ['exam', 'description', 'duration', 'department']
 
 # Read the text file
-df_exam = pd.read_fwf('../exams', widths=col_widths, names=col_names)
+df_exam = pd.read_fwf('./exams', widths=col_widths, names=col_names)
 
 # Print the dataframe
 #print(df_exam)
@@ -19,7 +19,7 @@ df_exam = pd.read_fwf('../exams', widths=col_widths, names=col_names)
 ####STUDENTS dataset####
 col_widths = [10, 4]
 col_names = ['student', 'course']
-df_st = pd.read_fwf('../students', widths=col_widths, names=col_names)
+df_st = pd.read_fwf('./students', widths=col_widths, names=col_names)
 # Print the dataframe
 #print(df_st)
 
@@ -30,16 +30,12 @@ df_st = pd.read_fwf('../students', widths=col_widths, names=col_names)
 ####ENROLMENTS dataset##
 col_widths = [10, 9]
 col_names = ['student', 'exam']
-df_en = pd.read_fwf('../enrolements', widths=col_widths, names=col_names)
+df_en = pd.read_fwf('./enrolements', widths=col_widths, names=col_names)
 # Print the dataframe
 #print(df_en)
 
 #print([len(df_en[a][1]) for a in col_names])
 
-
-####MERGING DATA####
-merged= pd.merge(df_exam, df_en, how="inner", on='exam')
-#print(merged)
 
 ####COINCIDENCES####
 coincidences = [["LK44FAE1", "LK44GAE1", "LK44SAE1"],
@@ -92,8 +88,6 @@ coincidences = [["LK44FAE1", "LK44GAE1", "LK44SAE1"],
 ]
 
 
-
-
 ####ROOMS####
 rooms= {0: ['TRENT-HALL', 125],
         1: ['TRENT-L19', 80],
@@ -112,7 +106,7 @@ rooms= {0: ['TRENT-HALL', 125],
         14: ['SPORT-LGE2', 230],
         15: ['SPORT-SMALL', 270]}
 
-
+####HOURS####
 hours = {
     0: {'day': '23-01-1995', 'time': '9:00', 'duration': 3},
     1: {'day': '23-01-1995', 'time': '13:30', 'duration': 3},

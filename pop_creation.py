@@ -21,9 +21,11 @@ def check_students(row, exam, help = False):
         elif (i is not None):
             students_for_exam = df_en[df_en['exam'] == i]['student'].tolist()
             total_students = total_students + students_for_exam
+
     # add the exam for which we are checking
     for i in exam:
         total_students = total_students + df_en[df_en['exam'] == i]['student'].tolist()
+
     if len(total_students) == len(set(total_students)):
 
         return True
@@ -33,7 +35,6 @@ def check_students(row, exam, help = False):
         #    print(len(total_students))
         #    print(len(set(total_students)))
         return False
-
 
 # function that will check if there are rooms available that check the condition required
 def is_there_any_rooms_left(timetable, examcapacity):
@@ -116,8 +117,6 @@ def check_combo_timetable(exam, coincidences, timetable, name=False):
 
 # creates population
 def create_individual(rooms, hours, df_exam, df_en, coincidences):
-    combo_count = 0
-
 
     # initialization
     timetable = [[None for r in range(len(rooms))] for h in range(len(hours))]
@@ -190,19 +189,19 @@ def create_individual(rooms, hours, df_exam, df_en, coincidences):
                     print("--------------------------------------------------------------------------------------")
 
                     if check_students(timetable[h], exam_collection) and r:
-                        for i in r:
-                            timetable[h][i] = exam_name
-                        print('já estaa')
+                        for exam in r:
+                            timetable[h][exam] = exam_name
                         hours_room = False
-                        print(all(not value for value in morethanone.values() if value))
-                        print((not all(not value for value in morethanone.values() if value)))
-                        print(hours_room)
-                        print((not all(not value for value in morethanone.values() if value)) and hours_room)
                         # print(timetable)
     return timetable
 
+pop = []
+while len(pop)<10:
+    print('POPULATION', len(pop))
+    print('############################################################################################################')
+    ind = create_individual(rooms, hours, df_exam, df_en, coincidences)
+    pop.append(ind)
+    print('############################################################################################################')
 
-ind = create_individual(rooms, hours, df_exam, df_en, coincidences)
-
-for i in ind:
+for i in pop:
     print(i)
