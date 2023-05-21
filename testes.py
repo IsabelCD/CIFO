@@ -137,12 +137,14 @@ mut_indiv[days_indexes[1]][1] = exam_code_1
 #print(mut_indiv)
 
 #DAY SWAP
+import datetime
 mut_indiv= representation.copy()
+[item[0]['day'] for item in representation]
 days_indexes = sample([item[0]['day'] for item in representation], 2)
 print(days_indexes)
 
 
-import datetime
+
 
 days_indexes= ['23-01-1995', '24-01-1995', '25-01-1995']
 
