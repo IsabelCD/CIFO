@@ -195,13 +195,13 @@ def create_individual(rooms, hours, df_exam, df_en, coincidences):
                         # print(timetable)
     return timetable
 
-pop = []
-while len(pop)<10:
-    print('POPULATION', len(pop))
-    print('############################################################################################################')
-    ind = create_individual(rooms, hours, df_exam, df_en, coincidences)
-    pop.append(ind)
-    print('############################################################################################################')
-
-for i in pop:
-    print(i)
+#pop = []
+#while len(pop)<10:
+#    print('POPULATION', len(pop))
+#    print('############################################################################################################')
+#    ind = create_individual(rooms, hours, df_exam, df_en, coincidences)
+#    pop.append(ind)
+#    print('############################################################################################################')
+#
+#for i in pop:
+#    print(i)

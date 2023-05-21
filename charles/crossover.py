@@ -150,11 +150,16 @@ def cycle_xo(p1, p2):
                     offspring1[index] = p2[index]
                     offspring2[index] = p1[index]
 
+    if not check_all_exams_scheduled(p1, offspring1):
+        missing_exams = get_missing_exams(p1, offspring1)
+        for exam in missing_exams:
+            offspring1 = assign_exam(exam, offspring1)
+    if not check_all_exams_scheduled(p2, offspring2):
+        missing_exams = get_missing_exams(p2, offspring2)
+        for exam in missing_exams:
+            offspring2 = assign_exam(exam, offspring2)
+
     return offspring1, offspring2
 
 
-if __name__ == '__main__':
-    p1, p2 = [[2, 7, 4], [3, 5, 1], [6, 9, 8]],\
-             [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-    o1, o2 = cycle_xo(p1, p2)
-    print(o1, o2)
+
