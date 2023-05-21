@@ -2,27 +2,20 @@ from random import randint, sample
 
 
 def binary_mutation(individual):
-    """Binary mutation for a GA individual
-    
-    Args:
-        individual (Individual): A GA individual from charles.py
+    mut_indiv= individual.copy()
+    days_indexes = random.sample(range(0, len(representation)), 2)
 
-    Raises:
-        Exception: When individual is not binary encoded.py
+    # Extract the exam codes to swap
+    exam_code_1 = mut_indiv[days_indexes[0]][1]
+    exam_code_2 = mut_indiv[days_indexes[1]][1]
 
-    Returns:
-        Individual: Mutated Individual
-    """
-    mut_index = randint(0, len(individual) - 1)
+    # Swap the exam codes
+    mut_indiv[days_indexes[0]][1] = exam_code_2
+    mut_indiv[days_indexes[1]][1] = exam_code_1
 
-    if individual[mut_index] == 0:
-        individual[mut_index] = 1
-    elif individual[mut_index] == 1:
-        individual[mut_index] = 0
-    else:
-        raise Exception(
-            f"Trying to do binary mutation on {individual}. But it's not binary.")
-    return individual
+    #check students e lotação
+    #só posso trocar se forem salas da mesma lotação
+    return mut_indiv
 
 
 def swap_mutation(individual):

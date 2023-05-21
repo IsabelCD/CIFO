@@ -76,7 +76,7 @@ for exam in representation:
 result = list(exams_by_day.values())
 #print(exams_by_day)
 
-print("result", result)
+#print("result", result)
 
 
 
@@ -107,4 +107,49 @@ for exam_list in result:
 # Calculate the fitness as the sum of the student counts
 fitness = sum(student_counts)
 
-print(fitness)
+#print(fitness)
+
+
+from random import randint, sample
+
+representation = [
+    [{'day': 'Monday', 'time': '10:00am'}, 'exam1'],
+    [{'day': 'Monday', 'time': '2:00pm'}, 'exam2'],
+    [{'day': 'Tuesday', 'time': '9:00am'}, 'exam3'],
+    [{'day': 'Tuesday', 'time': '1:00pm'}, 'exam4'],
+    [{'day': 'Wednesday', 'time': '11:00am'}, 'exam5'],
+    [{'day': 'Wednesday', 'time': '3:00pm'}, 'exam6'],
+]
+
+
+#SWAP MUTATION
+mut_indiv= representation.copy()
+days_indexes = sample(range(0, len(representation)), 2)
+
+# Extract the exam codes to swap
+exam_code_1 = mut_indiv[days_indexes[0]][1]
+exam_code_2 = mut_indiv[days_indexes[1]][1]
+
+# Swap the exam codes
+mut_indiv[days_indexes[0]][1] = exam_code_2
+mut_indiv[days_indexes[1]][1] = exam_code_1
+
+#print(mut_indiv)
+
+#DAY SWAP
+mut_indiv= representation.copy()
+days_indexes = sample([item[0]['day'] for item in representation], 2)
+print(days_indexes)
+
+
+import datetime
+
+days_indexes= ['23-01-1995', '24-01-1995', '25-01-1995']
+
+# Convert the date string to a datetime object
+for i in days_indexes:
+    date_weekday = datetime.datetime.strptime(i, '%d-%m-%Y').weekday()
+
+    if date_weekday==1:
+        print('aqui')
+

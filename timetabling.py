@@ -9,12 +9,6 @@ from charles.selection import tournament_sel, fps
 from data_import import *
 
 def get_fitness(self):
-    """A simple objective function to calculate distances
-    for the TSP problem.
-
-    Returns:
-        int: the total distance of the path
-    """
     # Create a dictionary with days as keys and exam codes as values
     #using a dictionary comprehension is more efficient than with an if statement  on a list
     exams_by_day = {}
@@ -48,22 +42,6 @@ def get_fitness(self):
     fitness = sum(student_counts)
     
     return fitness 
-
-
-def get_neighbours(self):
-    """A neighbourhood function for the TSP problem. Switches
-    indexes around in pairs.
-
-    Returns:
-        list: a list of individuals
-    """
-    n = [deepcopy(self.representation) for i in range(len(self.representation) - 1)]
-
-    for count, i in enumerate(n):
-        i[count], i[count + 1] = i[count + 1], i[count]
-
-    n = [Individual(i) for i in n]
-    return n
 
 
 # Monkey patching
