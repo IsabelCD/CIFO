@@ -1,5 +1,4 @@
 from charles.charles import Population, Individual
-from charles.search import hill_climb, sim_annealing
 from data.tsp_data import distance_matrix
 from random import choices
 from copy import deepcopy
