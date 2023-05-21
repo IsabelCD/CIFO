@@ -11,8 +11,8 @@ col_names = ['exam', 'description', 'duration', 'department']
 df_exam = pd.read_fwf('exams', widths=col_widths, names=col_names)
 
 # Print the dataframe
-#print(df_exam)
-#print([len(df_exam[a][1]) for a in col_names])
+print(df_exam)
+print([len(df_exam[a][1]) for a in col_names])
  
 
 
