@@ -8,7 +8,7 @@ col_widths = [8, 42, 4, 3]
 col_names = ['exam', 'description', 'duration', 'department']
 
 # Read the text file
-df_exam = pd.read_fwf('./exams', widths=col_widths, names=col_names)
+df_exam = pd.read_fwf('../exams', widths=col_widths, names=col_names)
 
 # Print the dataframe
 #print(df_exam)
@@ -19,7 +19,7 @@ df_exam = pd.read_fwf('./exams', widths=col_widths, names=col_names)
 ####STUDENTS dataset####
 col_widths = [10, 4]
 col_names = ['student', 'course']
-df_st = pd.read_fwf('./students', widths=col_widths, names=col_names)
+df_st = pd.read_fwf('../students', widths=col_widths, names=col_names)
 # Print the dataframe
 #print(df_st)
 
@@ -30,7 +30,7 @@ df_st = pd.read_fwf('./students', widths=col_widths, names=col_names)
 ####ENROLMENTS dataset##
 col_widths = [10, 9]
 col_names = ['student', 'exam']
-df_en = pd.read_fwf('./enrolements', widths=col_widths, names=col_names)
+df_en = pd.read_fwf('../enrolements', widths=col_widths, names=col_names)
 # Print the dataframe
 #print(df_en)
 

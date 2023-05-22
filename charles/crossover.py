@@ -1,4 +1,4 @@
-
+from pop_created import population
 from pop_creation import *
 import itertools
 
@@ -58,10 +58,10 @@ def get_item(object, item):
         try:
             indx_rooms = i.index(item)
             indx_time = object.index(i)
-            break
+            return indx_time, indx_rooms
         except:
             continue
-    return indx_time, indx_rooms
+
 
 def single_point_slots_co(parent1, parent2):
     offspring1 = parent1.copy()  # Create copies of parents
@@ -161,5 +161,49 @@ def cycle_xo(p1, p2):
 
     return offspring1, offspring2
 
+def order_timeslots_crossover(p1, p2):
+    offspring1 = [[None] * len(p1[0]) for _ in range(len(p1))]
+    offspring2 = [[None] * len(p1[0]) for _ in range(len(p1))]
 
+    timeslots = len(p1)
+    crossover_point1 = random.randint(1, timeslots)
+    crossover_point2 = random.randint(1, timeslots)
+
+    for i in range(min([crossover_point1,crossover_point2]), max([crossover_point1, crossover_point2])):
+        offspring1[i] = p1[i]
+        offspring2[i] = p2[i]
+
+    missing_exams1 = get_missing_exams(p1,offspring1)
+    missing_exams2 = get_missing_exams(p2,offspring2)
+    scheduled = []
+    for i in missing_exams1:
+        time, rooms = get_item(p2, i)
+        if time not in range(min([crossover_point1,crossover_point2]), max([crossover_point1, crossover_point2])):
+            offspring1[time][rooms] = i
+            scheduled.append(i)
+    missing_exams1 = [exam for exam in missing_exams1 if exam not in scheduled]
+    scheduled = []
+    for i in missing_exams2:
+        time, rooms = get_item(p1, i)
+        if time not in range(min([crossover_point1,crossover_point2]), max([crossover_point1, crossover_point2])):
+            offspring2[time][rooms] = i
+            scheduled.append(i)
+    missing_exams2 = [exam for exam in missing_exams2 if exam not in scheduled]
+    scheduled = []
+    #exams that are between the points on the other parent
+    for i in missing_exams1:
+        time, rooms = get_item(p1, i)
+        if offspring1[time][rooms] is None and check_students(offspring1[time], i):
+            offspring1[time][rooms] = i
+        scheduled.append(i)
+    missing_exams1 = [exam for exam in missing_exams1 if exam not in scheduled]
+    scheduled = []
+    # exams that are between the points on the other parent
+    for i in missing_exams2:
+        time, rooms = get_item(p2, i)
+        if offspring2[time][rooms] is None and check_students(offspring2[time], i):
+            offspring2[time][rooms] = i
+        scheduled.append(i)
+    missing_exams2 = [exam for exam in missing_exams2 if exam not in scheduled]
+    return offspring1, offspring2
 
