@@ -23,8 +23,6 @@ class Individual:
     def get_fitness(self):
         raise Exception("You need to monkey patch the fitness path.")
 
-    def get_neighbours(self, func, **kwargs):
-        raise Exception("You need to monkey patch the neighbourhood function.")
 
     def index(self, value):
         return self.representation.index(value)

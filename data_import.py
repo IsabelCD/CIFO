@@ -8,7 +8,7 @@ col_widths = [8, 42, 4, 3]
 col_names = ['exam', 'description', 'duration', 'department']
 
 # Read the text file
-df_exam = pd.read_fwf('../exams', widths=col_widths, names=col_names)
+df_exam = pd.read_fwf('./exams', widths=col_widths, names=col_names)
 
 # Print the dataframe
 #print(df_exam)
@@ -19,7 +19,7 @@ df_exam = pd.read_fwf('../exams', widths=col_widths, names=col_names)
 ####STUDENTS dataset####
 col_widths = [10, 4]
 col_names = ['student', 'course']
-df_st = pd.read_fwf('../students', widths=col_widths, names=col_names)
+df_st = pd.read_fwf('./students', widths=col_widths, names=col_names)
 # Print the dataframe
 #print(df_st)
 
@@ -30,7 +30,7 @@ df_st = pd.read_fwf('../students', widths=col_widths, names=col_names)
 ####ENROLMENTS dataset##
 col_widths = [10, 9]
 col_names = ['student', 'exam']
-df_en = pd.read_fwf('../enrolements', widths=col_widths, names=col_names)
+df_en = pd.read_fwf('./enrolements', widths=col_widths, names=col_names)
 # Print the dataframe
 #print(df_en)
 
@@ -160,5 +160,24 @@ hours = {
     49: {'day': '13-02-1995', 'time': '13:30', 'duration': 3},
     50: {'day': '13-02-1995', 'time': '16:30', 'duration': 3},
 }
+hours_keys = {'23-01-1995': [0, 1, 2],
+              '24-01-1995': [3, 4, 5],
+              '25-01-1995': [6, 7, 8],
+              '26-01-1995': [9, 10, 11],
+              '27-01-1995': [12, 13, 14],
+              '28-01-1995': [15],
+              '30-01-1995': [16, 17, 18],
+              '31-01-1995': [19, 20, 21],
+              '01-02-1995': [22, 23, 24],
+              '02-02-1995': [25, 26, 27],
+              '03-02-1995': [28, 29, 30],
+              '04-02-1995': [31],
+              '06-02-1995': [32, 33, 34],
+              '07-02-1995': [35, 36, 37],
+              '08-02-1995': [38, 39, 40],
+              '09-02-1995': [41, 42, 43],
+              '10-02-1995': [44, 45, 46],
+              '11-02-1995': [47],
+              '13-02-1995': [48, 49, 50]}
 
 

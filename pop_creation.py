@@ -4,7 +4,7 @@ import itertools
 
 
 # function that checks if there are no students making exams at the same time
-def check_students(row, exam, help = False):
+def check_students(row, exam, list_students = False):
     total_students = []
     row = list(set(row))
     for i in row:
@@ -25,7 +25,8 @@ def check_students(row, exam, help = False):
     # add the exam for which we are checking
     for i in exam:
         total_students = total_students + df_en[df_en['exam'] == i]['student'].tolist()
-
+    if list_students:
+        return total_students
     if len(total_students) == len(set(total_students)):
 
         return True
