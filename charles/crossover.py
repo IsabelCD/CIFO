@@ -1,4 +1,4 @@
-
+from copy import deepcopy
 from pop_creation import *
 import itertools
 
@@ -58,17 +58,17 @@ def get_item(object, item):
         try:
             indx_rooms = i.index(item)
             indx_time = object.index(i)
-            break
+            return indx_time, indx_rooms
         except:
             continue
-    return indx_time, indx_rooms
+
 
 def single_point_slots_co(parent1, parent2):
-    offspring1 = parent1.copy()  # Create copies of parents
-    offspring2 = parent2.copy()
+    offspring1 = deepcopy(parent1)  # Create copies of parents
+    offspring2 = deepcopy(parent2)
 
     timeslots = len(parent1)
-    crossover_point = random.randint(1, num_rooms - 1)  # Select crossover point
+    crossover_point = random.randint(1, timeslots - 1)  # Select crossover point
 
     # Swap room assignments after the crossover point
     for time in range(crossover_point, timeslots):
@@ -149,6 +149,7 @@ def cycle_xo(p1, p2):
                 if offspring1[index] is None:
                     offspring1[index] = p2[index]
                     offspring2[index] = p1[index]
+    #repair system
 
     if not check_all_exams_scheduled(p1, offspring1):
         missing_exams = get_missing_exams(p1, offspring1)
@@ -161,5 +162,13 @@ def cycle_xo(p1, p2):
 
     return offspring1, offspring2
 
+
+
+
+
+
+
+from pop_created import *
+print(get_item(population, "C42304E1"))
 
 
