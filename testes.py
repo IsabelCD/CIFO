@@ -3,33 +3,30 @@ import pandas as pd
 from random import randint, sample
 from pop_creation import *
 from pop_created import *
+import datetime
 
 individual= population[1]
 #print(individual)
 mut_indiv= individual.copy()
-mut_indexes = sample(range(0, len(mut_indiv)),2)
-#print(mut_indexes)
-mut_indiv[mut_indexes[0]], mut_indiv[mut_indexes[1]] = mut_indiv[mut_indexes[1]], mut_indiv[mut_indexes[0]]
-#print([individual[i] for i in mut_indexes])
-#print([mut_indiv[i] for i in mut_indexes])
+def day_swap(individual):
+    #Use as range of choice all days except saturdays, as they have a different number of exams
+    sample_range= []
+    for day, j in hours_keys.items():
+        if datetime.datetime.strptime(day, '%d-%m-%Y').weekday() != 5:
+            sample_range.append(day)
 
-import datetime
+    chosen_days= sample(sample_range, 2)
+    days_indexes=[]
+    for index, time in hours.items():
+        if time['day'] in chosen_days:
+            days_indexes.append(index)
 
-def inversion(individual):
-    #choose the days between which we want the inversion to happen
-    day_indexes = sample(range(0, len(individual)),2)
-    day_indexes.sort()
+    #choose two timeslots of exams and swap their exams
+    individual[days_indexes[0]], individual[days_indexes[1]], individual[days_indexes[2]], individual[days_indexes[3]], individual[days_indexes[4]], individual[days_indexes[5]] = individual[days_indexes[3]], individual[days_indexes[4]], individual[days_indexes[5]], individual[days_indexes[0]], individual[days_indexes[1]], individual[days_indexes[2]]
 
-    #Inverse the order of the sub-lists (the days of exams inverse order)
-    start_index, end_index = day_indexes
-    print('inicio')
-    print(individual[start_index:end_index+1])
-    individual[start_index:end_index+1] = individual[start_index:end_index+1][::-1]
-    print('separação')
-    print(individual[start_index:end_index+1])
     return individual
-inversion(individual)
 
+day_swap(individual)
 
 
 

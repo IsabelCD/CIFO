@@ -46,17 +46,13 @@ def timeslot_swap(individual):
 
     return individual
 
+
 def inversion(individual):
-    #choose week of inversion
-    week= sample([0,1,2])
-    #SÁBADOS NÃO PARTICIPAM NA INVERSÃO
-    #hours_keys to choose week
-    #then choose sample according to that
-    #choose the days between which we want the inversion to happen
+    #Choose the timeslots between which we want the inversion to happen
     day_indexes = sample(range(0, len(individual)),2)
     day_indexes.sort()
 
-    #Inverse the order of the sub-lists (the days of exams inverse order)
+    #Inverse the order of the sub-lists (the timeslots of exams inverse order)
     start_index, end_index = day_indexes
     individual[start_index:end_index+1] = individual[start_index:end_index+1][::-1]
     return individual
@@ -66,6 +62,6 @@ def inversion(individual):
 
 
 if __name__ == '__main__':
-    test = [1, 2, 3, 4, 5, 6]
+    test = population[sample(0, len(population))]
     test = day_swap(test)
 
