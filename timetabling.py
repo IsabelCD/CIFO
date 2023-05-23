@@ -68,7 +68,7 @@ for alternative in alternatives_mutation:
             mut_prob=0.05, xo_prob=0.6, elitism=True)
         algorithm_fit.append(best)
     
-    with open(f"{alternatives_mutation}.csv", "w", newline="") as f:
+    with open(f"{alternative}.csv", "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerows(algorithm_fit)
 
