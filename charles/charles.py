@@ -75,7 +75,6 @@ class Population:
                     offspring1 = mutate(offspring1)
                 if random() < mut_prob:
                     offspring2 = mutate(offspring2)
-                print('mutation')
 
                 new_pop.append(Individual(representation=offspring1))
                 if len(new_pop) < self.size:
