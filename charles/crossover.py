@@ -243,10 +243,6 @@ def order_timeslots_crossover(p1, p2):
     return missing_exams2, missing_exams1
 
 
-one, two = cycle_xo(population[29], population[5])
-print(one)
-print(len(one))
-print(two)
-print(len(two))
+
 
 

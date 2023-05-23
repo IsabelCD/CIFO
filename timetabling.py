@@ -18,7 +18,7 @@ def get_fitness(self):
     for day, day_keys in hours_keys.items():
         exam_by_day[day] = []
         for key_day in day_keys:
-            exam_by_day[day] = exam_by_day[day] + (self.representation[key_day])
+            exam_by_day[day] = exam_by_day[day] + (self[key_day])
 
     for day, exams in exam_by_day.items():
 
@@ -42,14 +42,15 @@ Individual.get_fitness = get_fitness
 
 
 
-
+individuals = set()
 # Step 2: Iterate over your list of lists and create Individual instances
 for i, inner_list in enumerate(population):
     individual = Individual(representation=inner_list)
+    individuals.add(individual)
     print(i)
 
 # Step 3: Assign the created Individual instances to the individuals list of the Population instance
-pop= Population(size =30, replacement=False, optim= 'min')
+pop= Population(size =30, replacement=False, optim= 'min', sol_size=30, valid_set=individuals)
 
 pop.evolve(gens=50, select=tournament_sel, mutate=binary_mutation, crossover=cycle_xo,
            mut_prob=0.05, xo_prob=0.9, elitism=True)
