@@ -105,5 +105,5 @@ class Population:
     def __len__(self):
         return len(self.individuals)
 
-    def __getitem__(self, position):
+    def __gextitem__(self, position):
         return self.individuals[position]
