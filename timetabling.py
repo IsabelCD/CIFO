@@ -1,5 +1,5 @@
 from charles.charles import Population, Individual
-from charles.crossover import cycle_xo
+from charles.crossover import *
 from charles.mutation import *
 from charles.selection import tournament_sel
 from pop_created import *
@@ -12,6 +12,7 @@ def get_fitness(self):
 
     # Create an empty list to hold nº students with multiple exams in each day
     student_counts = []
+    student_counts_ovenight = []
     exam_by_day = {}
 
     # Iterate over each sub-list in the result list
@@ -26,14 +27,28 @@ def get_fitness(self):
         students = check_students(exams, [], list_students= True)
         
         # Calculate the difference between the number of students who took the exams and the number of unique students
-        diff = len(students) - len(set(students))
+        diff_d = len(students) - len(set(students))
+        diff_o = 0
+
+        if day not in mondays:
+            today_students = list(set(students))
+
+            # Get the key for the day before the current day
+            previous_day = list(exam_by_day.keys())[list(exam_by_day.keys()).index(day) - 1]
+
+            yesterday_students = check_students(exam_by_day[previous_day], [], list_students = True)
+
+            diff_o = len(today_students+yesterday_students) - len(set(today_students+yesterday_students))
+
+
         
         # Add the result to the student_counts list
-        student_counts.append(diff)
+        student_counts.append(diff_d)
+        student_counts_ovenight.append(diff_o)
 
     # Calculate the fitness as the sum of the student counts
-    fitness = sum(student_counts)
-    
+    fitness = sum(student_counts) + 0.5*sum(student_counts_ovenight)
+    print(fitness)
     return fitness 
 
 
