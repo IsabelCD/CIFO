@@ -2,7 +2,7 @@ from random import shuffle, choice, sample, random
 from operator import attrgetter
 from copy import deepcopy
 
-
+#best=[]
 class Individual:
     def __init__(
         self,
@@ -94,14 +94,17 @@ class Population:
                         new_pop.append(elite)
 
             self.individuals = new_pop
-
+            
+            
             if self.optim == "max":
                 print(f'Best Individual: {max(self, key=attrgetter("fitness"))}')
             elif self.optim == "min":
+                #guardar o best individual do step 
+                #best.append()
                 print(f'Best Individual: {min(self, key=attrgetter("fitness"))}')
 
     def __len__(self):
         return len(self.individuals)
 
-    def __gextitem__(self, position):
+    def __getitem__(self, position):
         return self.individuals[position]

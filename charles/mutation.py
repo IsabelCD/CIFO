@@ -30,18 +30,28 @@ def swap_mutation(individual):
         return mut_indiv
 
 
-def timeslot_swap(individual):
+def day_swap(individual):
     #Use as range of choice all days except saturdays, as they have a different number of exams
     sample_range= []
-    i=0
-    for i, time in hours.items():
-        print(datetime.datetime.strptime(time['day'], '%d-%m-%Y').weekday())
-        if datetime.datetime.strptime(time['day'], '%d-%m-%Y').weekday() != 5:
-            sample_range.append(i)
-        i+=1
+    for day, j in hours_keys.items():
+        if datetime.datetime.strptime(day, '%d-%m-%Y').weekday() != 5:
+            sample_range.append(day)
+
+    chosen_days= sample(sample_range, 2)
+    days_indexes=[]
+    for index, time in hours.items():
+        if time['day'] in chosen_days:
+            days_indexes.append(index)
 
     #choose two timeslots of exams and swap their exams
-    mut_indexes = sample(sample_range,2)
+    individual[days_indexes[0]], individual[days_indexes[1]], individual[days_indexes[2]], individual[days_indexes[3]], individual[days_indexes[4]], individual[days_indexes[5]] = individual[days_indexes[3]], individual[days_indexes[4]], individual[days_indexes[5]], individual[days_indexes[0]], individual[days_indexes[1]], individual[days_indexes[2]]
+
+    return individual
+
+
+def timeslot_swap(individual):
+    #choose two timeslots of exams and swap their exams
+    mut_indexes = sample(range(0, len(mut_indiv)),2)
     individual[mut_indexes[0]], individual[mut_indexes[1]] = individual[mut_indexes[1]], individual[mut_indexes[0]]
 
     return individual
