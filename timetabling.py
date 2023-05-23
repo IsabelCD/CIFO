@@ -1,9 +1,10 @@
 from charles.charles import Population, Individual
 from charles.crossover import *
 from charles.mutation import *
-from charles.selection import tournament_sel
+from charles.selection import *
 from pop_created import *
 from pop_creation import *
+import csv
 
 
 def get_fitness(self):
@@ -56,19 +57,22 @@ def get_fitness(self):
 Individual.get_fitness = get_fitness
 
 
-
-
-
-# Step 2: Iterate over your list of lists and create Individual instances
-#for i, inner_list in enumerate(population):
-#    individual = Individual(representation=inner_list)
-#    print(i)
-
-
 # Step 3: Assign the created Individual instances to the individuals list of the Population instance
 pop= Population(size =30, replacement=False, optim= 'min', valid_set= None, initial_pop=population)
 
-pop.evolve(gens=50, select=tournament_sel, mutate=inversion, crossover=cycle_xo,
-           mut_prob=0.05, xo_prob=0.9, elitism=True)
+alternatives_mutation=[day_swap, timeslot_swap, inversion]
+for alternative in alternatives_mutation:
+    algorithm_fit= []
+    for i in range(30):
+        best=[]
+        pop.evolve(gens=5, select=tournament_sel, mutate=alternative, crossover=cycle_xo,
+            mut_prob=0.05, xo_prob=0.6, elitism=True)
+        algorithm.append(best)
+    
+    with open(f"{alternatives_mutation}.csv", "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerows(algorithm)
+
+
 
 

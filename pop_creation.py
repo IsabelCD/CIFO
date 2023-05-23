@@ -65,7 +65,7 @@ def multiple_rooms(timetable, examcapacity, numrooms, exam):
         #print("key", key, 'value', value, check_students(timetable[key], exam, help=True), 'exam', exam)
         if check_students(timetable[key], exam):
             hoursAvailable.append(key)
-    print('this are the hours available', hoursAvailable, examcapacity, exam)
+    #print('this are the hours available', hoursAvailable, examcapacity, exam)
     if not hoursAvailable or numrooms > 6:
         return "Crossover not possible"
 
@@ -109,7 +109,7 @@ def check_combo_timetable(exam, coincidences, timetable, name=False):
                 return True
             else:
                 if name:
-                    print(combo_string)
+                    #print(combo_string)
                     return combo_string, i
                 else:
                     return False
@@ -141,7 +141,7 @@ def create_individual(rooms, hours, df_exam, df_en, coincidences, assign = False
             if check_combo_timetable(i, coincidences, timetable):
                 continue
             else:
-                print('MODIFY')
+                #print('MODIFY')
                 if i.startswith("COMBO"):
                     exam_name = i
                     combo_index = int(i.split()[1])
@@ -160,24 +160,24 @@ def create_individual(rooms, hours, df_exam, df_en, coincidences, assign = False
 
         while hours_room:
             if roomhoursAvailable:
-                print('exam', i)
+                #print('exam', i)
                 hr = random.choice(roomhoursAvailable)
                 # r = random.choice(roomsAvailable)
                 roomhoursAvailable.remove(hr)
-                print("condition:", check_students(timetable[hr[0]], exam_collection))
+                #print("condition:", check_students(timetable[hr[0]], exam_collection))
 
                 if check_students(timetable[hr[0]], exam_collection) and timetable[hr[0]][hr[1]] is None:
-                    if room_capacity <= 15:
-                        print('small exam', hr[1])
-                    print("--------------------------------------------------------------------------------------")
+                    #if room_capacity <= 15:
+                        #print('small exam', hr[1])
+                    #print("--------------------------------------------------------------------------------------")
                     timetable[hr[0]][hr[1]] = exam_name
                     hours_room = False
                     # print(timetable)
 
             else:
-                print('começou')
+                #print('começou')
                 morethanone = multiple_rooms(timetable, room_capacity, num_rooms, exam_collection)
-                print(morethanone)
+                #print(morethanone)
 
                 if morethanone == "Crossover not possible":
                     return "Crossover not possible"
@@ -188,24 +188,24 @@ def create_individual(rooms, hours, df_exam, df_en, coincidences, assign = False
                         return "Crossover not possible"
                     num_rooms = num_rooms + 1
                 num_rooms = num_rooms + 1
-                print('exam', i)
+                #print('exam', i)
                 r = []
                 while hours_room:
-                    print(num_rooms)
-                    print(morethanone)
+                    #print(num_rooms)
+                    #print(morethanone)
                     h = random.choice(list(morethanone.keys()))
                     try:
                         r = random.choice(morethanone[h])
                         morethanone[h].remove(r)
-                        print('what?', morethanone[h])
+                        #print('what?', morethanone[h])
                     except:
                         r = []
                         morethanone.pop(h)
 
-                    print('h', h, 'r', r)
+                    #print('h', h, 'r', r)
 
-                    print("condition:", check_students(timetable[h], exam_collection), room_capacity)
-                    print("--------------------------------------------------------------------------------------")
+                    #print("condition:", check_students(timetable[h], exam_collection), room_capacity)
+                    #print("--------------------------------------------------------------------------------------")
 
                     if check_students(timetable[h], exam_collection) and r:
                         for exam in r:

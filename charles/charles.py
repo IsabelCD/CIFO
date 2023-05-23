@@ -2,7 +2,7 @@ from random import shuffle, choice, sample, random
 from operator import attrgetter
 from copy import deepcopy
 
-#best=[]
+
 class Individual:
     def __init__(
         self,
@@ -52,7 +52,7 @@ class Population:
                 )
             )
 
-    def evolve(self, gens, xo_prob, mut_prob, select, mutate, crossover, elitism):
+    def evolve(self, gens, xo_prob, mut_prob, select, mutate, crossover, elitism= True):
 
         for i in range(gens):
             new_pop = []
@@ -100,8 +100,9 @@ class Population:
                 print(f'Best Individual: {max(self, key=attrgetter("fitness"))}')
             elif self.optim == "min":
                 #guardar o best individual do step 
-                #best.append()
+                best.append(self.fitness)
                 print(f'Best Individual: {min(self, key=attrgetter("fitness"))}')
+        return best
 
     def __len__(self):
         return len(self.individuals)
