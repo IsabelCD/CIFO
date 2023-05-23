@@ -64,13 +64,13 @@ alternatives_mutation=[day_swap, timeslot_swap, inversion]
 for alternative in alternatives_mutation:
     algorithm_fit= []
     for i in range(30):
-        best = pop.evolve(gens=5, select=tournament_sel, mutate=alternative, crossover=cycle_xo,
+        best = pop.evolve(gens=10, select=tournament_sel, mutate=alternative, crossover=cycle_xo,
             mut_prob=0.05, xo_prob=0.6, elitism=True)
-        algorithm.append(best)
+        algorithm_fit.append(best)
     
     with open(f"{alternatives_mutation}.csv", "w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerows(algorithm)
+        writer.writerows(algorithm_fit)
 
 
 
