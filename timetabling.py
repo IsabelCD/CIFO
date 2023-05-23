@@ -33,7 +33,6 @@ def get_fitness(self):
 
     # Calculate the fitness as the sum of the student counts
     fitness = sum(student_counts)
-    
     return fitness 
 
 

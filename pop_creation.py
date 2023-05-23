@@ -63,12 +63,11 @@ def multiple_rooms(timetable, examcapacity, numrooms, exam):
     possible_combos = {}
     for key, value in hours.items():
         #print("key", key, 'value', value, check_students(timetable[key], exam, help=True), 'exam', exam)
-        if check_students(timetable[key], exam, help=True):
+        if check_students(timetable[key], exam):
             hoursAvailable.append(key)
     print('this are the hours available', hoursAvailable, examcapacity, exam)
-    if numrooms>=4:
-        for i in hoursAvailable:
-            print('horario', i, timetable[i])
+    if not hoursAvailable or numrooms > 6:
+        return "Crossover not possible"
 
     for i in hoursAvailable:
         # matrix that has all the index that are none of hour i
@@ -117,25 +116,37 @@ def check_combo_timetable(exam, coincidences, timetable, name=False):
 
 
 # creates population
-def create_individual(rooms, hours, df_exam, df_en, coincidences):
+def create_individual(rooms, hours, df_exam, df_en, coincidences, assign = False, timetable = None, examstoschedule= None):
+    if timetable is not None:
+        exam_count = [examstoschedule]
+    else:
+        exam_count = df_exam['exam']
+    if not assign:
+        # initialization
+        timetable = [[None for r in range(len(rooms))] for h in range(len(hours))]
 
-    # initialization
-    timetable = [[None for r in range(len(rooms))] for h in range(len(hours))]
 
     # all exams in the time table
-    for i in range(df_exam.shape[0]):
+    for i in exam_count:
         hours_room = True
-        exam_name = df_exam.loc[i][0]
+        exam_name = i
         exam_collection = []
-        room_capacity = df_en['exam'].value_counts()[df_exam.loc[i][0]]
+        if i.startswith("COMBO"):
+            room_capacity = []
+        else:
+            room_capacity = df_en['exam'].value_counts()[i]
         num_rooms = 2
 
-        if check_exam_coincidences(df_exam.loc[i][0], coincidences):
-            if check_combo_timetable(df_exam.loc[i][0], coincidences, timetable):
+        if check_exam_coincidences(i, coincidences) or i.startswith('COMBO'):
+            if check_combo_timetable(i, coincidences, timetable):
                 continue
             else:
                 print('MODIFY')
-                exam_name, combo_index = check_combo_timetable(df_exam.loc[i][0], coincidences, timetable, name=True)
+                if i.startswith("COMBO"):
+                    exam_name = i
+                    combo_index = int(i.split()[1])
+                else:
+                    exam_name, combo_index = check_combo_timetable(i, coincidences, timetable, name=True)
                 room_capacity = 0
                 for exam in coincidences[combo_index]:
                     exam_collection.append(exam)
@@ -166,8 +177,15 @@ def create_individual(rooms, hours, df_exam, df_en, coincidences):
             else:
                 print('começou')
                 morethanone = multiple_rooms(timetable, room_capacity, num_rooms, exam_collection)
+                print(morethanone)
+
+                if morethanone == "Crossover not possible":
+                    return "Crossover not possible"
+
                 while all(not value for value in morethanone.values() if value):
                     morethanone = multiple_rooms(timetable, room_capacity, num_rooms, exam_collection)
+                    if morethanone == "Crossover not possible":
+                        return "Crossover not possible"
                     num_rooms = num_rooms + 1
                 num_rooms = num_rooms + 1
                 print('exam', i)
@@ -186,7 +204,7 @@ def create_individual(rooms, hours, df_exam, df_en, coincidences):
 
                     print('h', h, 'r', r)
 
-                    print("condition:", check_students(timetable[h], exam_collection, help= True), room_capacity)
+                    print("condition:", check_students(timetable[h], exam_collection), room_capacity)
                     print("--------------------------------------------------------------------------------------")
 
                     if check_students(timetable[h], exam_collection) and r:
