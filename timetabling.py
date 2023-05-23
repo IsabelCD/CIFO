@@ -58,13 +58,14 @@ Individual.get_fitness = get_fitness
 
 
 # Step 3: Assign the created Individual instances to the individuals list of the Population instance
-pop= Population(size =30, replacement=False, optim= 'min', valid_set= None, initial_pop=population)
+#pop= Population(size =30, replacement=False, optim= 'min', valid_set= None, initial_pop=population)
 
-alternatives_mutation=[day_swap, timeslot_swap, inversion]
+alternatives_mutation=[single_point_slots_co, cycle_xo, order_timeslots_crossover]
 for alternative in alternatives_mutation:
     algorithm_fit= []
     for i in range(30):
-        best = pop.evolve(gens=10, select=tournament_sel, mutate=alternative, crossover=cycle_xo,
+        pop = Population(size=30, replacement=False, optim='min', valid_set=None, initial_pop=population)
+        best = pop.evolve(gens=10, select=tournament_sel, mutate=day_swap, crossover=cycle_xo,
             mut_prob=0.05, xo_prob=0.6, elitism=True)
         algorithm_fit.append(best)
     
