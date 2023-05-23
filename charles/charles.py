@@ -41,16 +41,14 @@ class Individual:
 
 
 class Population:
-    def __init__(self, size, optim, **kwargs):
+    def __init__(self, size, optim,initial_pop, **kwargs):
         self.individuals = []
         self.size = size
         self.optim = optim
-        for _ in range(size):
+        for individual in initial_pop:
             self.individuals.append(
                 Individual(
-                    size=kwargs["sol_size"],
-                    replacement=kwargs["replacement"],
-                    valid_set=kwargs["valid_set"],
+                    representation=individual
                 )
             )
 

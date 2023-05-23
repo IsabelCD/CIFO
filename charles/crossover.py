@@ -110,7 +110,7 @@ def cycle_xo(p1, p2):
         index_time, index_rooms = get_item(offspring1, None)
         val1 = p1[index_time][index_rooms]
         val2 = p2[index_time][index_rooms]
-        print('iniciais', index_time, index_rooms)
+        #print('iniciais', index_time, index_rooms)
         parents = True
 
         if counter % 2 == 0:

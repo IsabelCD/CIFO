@@ -1,6 +1,6 @@
 from charles.charles import Population, Individual
 from charles.crossover import cycle_xo
-from charles.mutation import binary_mutation
+from charles.mutation import *
 from charles.selection import tournament_sel
 from pop_created import *
 from pop_creation import *
@@ -45,17 +45,15 @@ Individual.get_fitness = get_fitness
 
 
 # Step 2: Iterate over your list of lists and create Individual instances
-for i, inner_list in enumerate(population):
-    individual = Individual(representation=inner_list)
-    print(i)
+#for i, inner_list in enumerate(population):
+#    individual = Individual(representation=inner_list)
+#    print(i)
+
 
 # Step 3: Assign the created Individual instances to the individuals list of the Population instance
-pop= Population(size =30, replacement=False, optim= 'min')
+pop= Population(size =30, replacement=False, optim= 'min', valid_set= None, initial_pop=population)
 
-pop.evolve(gens=50, select=tournament_sel, mutate=binary_mutation, crossover=cycle_xo,
+pop.evolve(gens=50, select=tournament_sel, mutate=inversion, crossover=cycle_xo,
            mut_prob=0.05, xo_prob=0.9, elitism=True)
 
-
-#hill_climb(pop)
-#sim_annealing(pop)
 
