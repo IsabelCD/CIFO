@@ -30,7 +30,7 @@ def remove_duplicates(offspring):
             if exam in unique_exams and exam is not None:
                 timeslot[i] = None
         unique_exams.update(timeslot)
-    print(unique_exams)
+    
 
 
     return offspring
@@ -106,7 +106,7 @@ def cycle_xo(p1, p2):
         #index of the val2 in the offspring1
         index_off = offspring1_index.index(val_inside2)
         count = count + 1
-        print(count)
+        #print(count)
 
         #new values for the inside
         val_inside1 = offspring1_index[index_off]
@@ -118,19 +118,18 @@ def cycle_xo(p1, p2):
             offspring1[index] = p1[index]
             offspring2[index] = p2[index]
 
-    print("Repair system", not check_all_exams_scheduled(p1, offspring1))
+    #print("Repair system", not check_all_exams_scheduled(p1, offspring1))
 
     if not check_all_exams_scheduled(p1, offspring1):
         offspring1 = remove_duplicates(offspring1)
 
         missing_exams = get_missing_exams(p1, offspring1)
-        print('hi')
         for exam in missing_exams:
             offspring1 = create_individual(rooms,hours, df_exam, df_en, coincidences, assign=True, timetable= offspring1, examstoschedule=exam)
             if offspring1 == "Crossover not possible":
                 print("Crossover not possible")
                 return p1, p2
-    print("Repair system 2")
+    #print("Repair system 2")
 
     if not check_all_exams_scheduled(p2, offspring2):
         offspring2 = remove_duplicates(offspring2)
