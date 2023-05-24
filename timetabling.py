@@ -49,7 +49,7 @@ def get_fitness(self):
 
     # Calculate the fitness as the sum of the student counts
     fitness = sum(student_counts) + 0.5*sum(student_counts_ovenight)
-    print(fitness)
+    #print(fitness)
     return fitness 
 
 
@@ -60,16 +60,17 @@ Individual.get_fitness = get_fitness
 # Step 3: Assign the created Individual instances to the individuals list of the Population instance
 #pop= Population(size =30, replacement=False, optim= 'min', valid_set= None, initial_pop=population)
 
-alternatives_mutation=[single_point_slots_co, cycle_xo, order_timeslots_crossover]
+alternatives_mutation = [single_point_slots_co, cycle_xo, order_timeslots_crossover]
 for alternative in alternatives_mutation:
-    algorithm_fit= []
-    for i in range(30):
+    algorithm_fit = []
+    for i in range(10):
+        print("range", i)
         pop = Population(size=30, replacement=False, optim='min', valid_set=None, initial_pop=population)
-        best = pop.evolve(gens=10, select=tournament_sel, mutate=day_swap, crossover=cycle_xo,
+        best = pop.evolve(gens=30, select=tournament_sel, mutate=day_swap, crossover=alternative,
             mut_prob=0.05, xo_prob=0.6, elitism=True)
         algorithm_fit.append(best)
     
-    with open(f"{alternative}.csv", "w", newline="") as f:
+    with open(f"{alternative._name_}.csv", "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerows(algorithm_fit)
 

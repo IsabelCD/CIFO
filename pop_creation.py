@@ -6,8 +6,7 @@ import itertools
 # function that checks if there are no students making exams at the same time
 def check_students(row, exam, list_students = False):
     total_students = []
-    row = list(set(row))
-    for i in row:
+    for i in set(row):
         # if the exam is actually a combination of exams
         if (i is not None) and i.startswith("COMBO"):
             # get the index of the combination
@@ -27,15 +26,8 @@ def check_students(row, exam, list_students = False):
         total_students = total_students + df_en[df_en['exam'] == i]['student'].tolist()
     if list_students:
         return total_students
-    if len(total_students) == len(set(total_students)):
+    return len(total_students) == len(set(total_students))
 
-        return True
-    else:
-        #if help:
-        #    print(exam)
-        #    print(len(total_students))
-        #    print(len(set(total_students)))
-        return False
 
 # function that will check if there are rooms available that check the condition required
 def is_there_any_rooms_left(timetable, examcapacity):

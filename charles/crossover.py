@@ -51,8 +51,8 @@ def get_item(object, item):
 
 
 def single_point_slots_co(parent1, parent2):
-    offspring1 = parent1.copy()  # Create copies of parents
-    offspring2 = parent2.copy()
+    offspring1 = copy.deepcopy(parent1)  # Create copies of parents
+    offspring2 = copy.deepcopy(parent2)
 
     timeslots = len(parent1)
     crossover_point = random.randint(1, timeslots - 1)  # Select crossover point
@@ -217,18 +217,12 @@ def order_timeslots_crossover(p1, p2):
 
     missing_exams2 = [exam for exam in missing_exams2 if exam not in scheduled]
 
-    scheduled = []
     for exam in missing_exams1:
         off1 = copy.deepcopy(offspring1)
         offspring1 = create_individual(rooms,hours, df_exam, df_en, coincidences, assign=True, timetable= offspring1, examstoschedule=exam)
         if offspring1 == "Crossover not possible":
             print("Crossover not possible")
             return p1, p2
-        if off1 != offspring1:
-            scheduled.append(exam)
-
-    missing_exams1 = [exam for exam in missing_exams1 if exam not in scheduled]
-    scheduled = []
 
     for exam in missing_exams2:
         off2 = copy.deepcopy(offspring2)
@@ -236,10 +230,7 @@ def order_timeslots_crossover(p1, p2):
         if offspring1 == "Crossover not possible":
             print("Crossover not possible")
             return p1, p2
-        if off2 != offspring2:
-            scheduled.append(exam)
-    missing_exams2 = [exam for exam in missing_exams2 if exam not in scheduled]
-    return missing_exams2, missing_exams1
+    return offspring1, offspring2
 
 
 

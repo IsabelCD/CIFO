@@ -102,7 +102,9 @@ class Population:
             elif self.optim == "min":
                 #guardar o best individual do step 
                 best.append(min(self, key=attrgetter("fitness")))
-                print(f'Best Individual: {min(self, key=attrgetter("fitness"))}')
+                print('gen', i, f'Best Individual: {min(self, key=attrgetter("fitness"))}')
+            if min(self, key=attrgetter("fitness")) == 0:
+                break
         return best
 
     def __len__(self):
