@@ -4,30 +4,22 @@ from random import randint, sample
 from pop_creation import *
 from pop_created import *
 import datetime
+from charles.crossover import *
+from charles.mutation import *
+from charles.selection import *
+import csv
 
-individual= population[1]
-#print(individual)
-mut_indiv= individual.copy()
-def day_swap(individual):
-    #Use as range of choice all days except saturdays, as they have a different number of exams
-    sample_range= []
-    for day, j in hours_keys.items():
-        if datetime.datetime.strptime(day, '%d-%m-%Y').weekday() != 5:
-            sample_range.append(day)
-
-    chosen_days= sample(sample_range, 2)
-    days_indexes=[]
-    for index, time in hours.items():
-        if time['day'] in chosen_days:
-            days_indexes.append(index)
-
-    #choose two timeslots of exams and swap their exams
-    individual[days_indexes[0]], individual[days_indexes[1]], individual[days_indexes[2]], individual[days_indexes[3]], individual[days_indexes[4]], individual[days_indexes[5]] = individual[days_indexes[3]], individual[days_indexes[4]], individual[days_indexes[5]], individual[days_indexes[0]], individual[days_indexes[1]], individual[days_indexes[2]]
-
-    return individual
-
-day_swap(individual)
-
+alternatives_mutation=[day_swap, timeslot_swap, inversion]
+for alternative in alternatives_mutation:
+    algorithm_fit= []
+    best=[]
+    for i in range(30):
+        best.append(i)
+        algorithm_fit.append(best)
+    
+    with open(f"{alternative.__name__}.csv", "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerows(algorithm_fit)
 
 
 

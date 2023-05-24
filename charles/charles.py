@@ -56,7 +56,7 @@ class Population:
         best = []
         for i in range(gens):
             new_pop = []
-            
+            print(f"I'm in generation {i}")
 
             if elitism:
                 if self.optim == "max":
