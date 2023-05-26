@@ -9,17 +9,9 @@ from charles.mutation import *
 from charles.selection import *
 import csv
 
-alternatives_mutation=[day_swap, timeslot_swap, inversion]
-for alternative in alternatives_mutation:
-    algorithm_fit= []
-    best=[]
-    for i in range(30):
-        best.append(i)
-        algorithm_fit.append(best)
-    
-    with open(f"{alternative.__name__}.csv", "w", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerows(algorithm_fit)
+exemplo="hello world"
+print(30*"-", f"variable {exemplo}", 30*"-")
+
 
 
 

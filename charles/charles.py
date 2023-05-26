@@ -56,7 +56,6 @@ class Population:
         best = []
         for i in range(gens):
             new_pop = []
-            print(f"I'm in generation {i}")
 
             if elitism:
                 if self.optim == "max":
@@ -102,7 +101,10 @@ class Population:
             elif self.optim == "min":
                 #guardar o best individual do step 
                 best.append(min(self, key=attrgetter("fitness")))
-                print(f'Best Individual: {min(self, key=attrgetter("fitness"))}')
+                print(f'gen: {i}, Best Individual: {min(self, key=attrgetter("fitness"))}')
+            
+            if min(self, key=attrgetter("fitness"))==0:
+                break
         return best
 
     def __len__(self):
