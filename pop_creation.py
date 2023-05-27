@@ -229,7 +229,7 @@ def create_individual(rooms, hours, df_exam, df_en, coincidences, assign = False
                             timetable[h][exam] = exam_name
                         hours_room = False
                         # print(timetable)
-    return timetable 
+    return timetable
 
 #pop = []
 #while len(pop)<10:
