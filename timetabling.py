@@ -9,7 +9,7 @@ import csv
 
 def get_fitness(self):
     # Create a dictionary with days as keys and exams as values
-    #using a dictionary comprehension is more efficient than with an if statement  on a list
+    # using a dictionary comprehension is more efficient than with an if statement  on a list
 
     # Create an empty list to hold nº students with multiple exams in each day
     student_counts = []
@@ -25,8 +25,8 @@ def get_fitness(self):
     for day, exams in exam_by_day.items():
 
         # Get the list of students who took the exams on the current day
-        students = check_students(exams, [], list_students= True)
-        
+        students = check_students(exams, [], list_students=True)
+
         # Calculate the difference between the number of students who took the exams and the number of unique students
         diff_d = len(students) - len(set(students))
         diff_o = 0
@@ -37,43 +37,36 @@ def get_fitness(self):
             # Get the key for the day before the current day
             previous_day = list(exam_by_day.keys())[list(exam_by_day.keys()).index(day) - 1]
 
-            yesterday_students = check_students(exam_by_day[previous_day], [], list_students = True)
+            yesterday_students = check_students(exam_by_day[previous_day], [], list_students=True)
 
-            diff_o = len(today_students+yesterday_students) - len(set(today_students+yesterday_students))
+            diff_o = len(today_students + yesterday_students) - len(set(today_students + yesterday_students))
 
-
-        
         # Add the result to the student_counts list
         student_counts.append(diff_d)
         student_counts_ovenight.append(diff_o)
 
     # Calculate the fitness as the sum of the student counts
-    fitness = sum(student_counts) + 0.5*sum(student_counts_ovenight)
-    #print(fitness)
-    return fitness 
+    fitness = sum(student_counts) + 0.5 * sum(student_counts_ovenight)
+    # print(fitness)
+    return fitness
 
 
 # Monkey patching
 Individual.get_fitness = get_fitness
 
-
 # Step 3: Assign the created Individual instances to the individuals list of the Population instance
-#pop= Population(size =30, replacement=False, optim= 'min', valid_set= None, initial_pop=population)
+# pop= Population(size =30, replacement=False, optim= 'min', valid_set= None, initial_pop=population)
 
-alternatives_mutation = [single_point_slots_co, cycle_xo, order_timeslots_crossover]
+alternatives_mutation = [ranking_sel]
 for alternative in alternatives_mutation:
     algorithm_fit = []
-    for i in range(10):
+    for i in range(10-5):
         print("range", i)
         pop = Population(size=30, replacement=False, optim='min', valid_set=None, initial_pop=population)
-        best = pop.evolve(gens=30, select=tournament_sel, mutate=day_swap, crossover=alternative,
-            mut_prob=0.05, xo_prob=0.6, elitism=True)
+        best = pop.evolve(gens=30, select=alternative, mutate=day_swap, crossover=cycle_xo
+                          ,mut_prob=0.05, xo_prob=0.6, elitism=True)
         algorithm_fit.append(best)
-    
-    with open(f"{alternative._name_}.csv", "w", newline="") as f:
+
+    with open(f"{alternative.__name__}.csv", "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerows(algorithm_fit)
-
-
-
-

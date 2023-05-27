@@ -37,17 +37,7 @@ def remove_duplicates(offspring):
 
 
 
-def get_item(object, item):
-    indx_rooms = []
 
-    for i in object:
-        #print (i)
-        if item in i:
-            indx_time = object.index(i)
-            indx_rooms = [index for index, value in enumerate(i) if value == item]
-
-
-    return indx_time, indx_rooms
 
 
 def single_point_slots_co(parent1, parent2):
@@ -143,93 +133,49 @@ def cycle_xo(p1, p2):
     return offspring1, offspring2
 
 def order_timeslots_crossover(p1, p2):
+    #create empty offspring
     offspring1 = [[None] * len(p1[0]) for _ in range(len(p1))]
     offspring2 = [[None] * len(p1[0]) for _ in range(len(p1))]
 
+    #get the interval points tha will be conserved
     timeslots = len(p1)
     crossover_point1 = random.randint(1, timeslots)
     crossover_point2 = random.randint(1, timeslots)
 
+    #pass the segment that will be conserved to the offspring
     for i in range(min([crossover_point1,crossover_point2]), max([crossover_point1, crossover_point2])):
         offspring1[i] = p1[i]
         offspring2[i] = p2[i]
 
-    missing_exams1 = get_missing_exams(p1,offspring1)
-    missing_exams2 = get_missing_exams(p2,offspring2)
-    scheduled = []
-    for i in missing_exams1:
-        time, rooms = get_item(p2, i)
-        for j in rooms:
-            room = []
-            if offspring1[time][j] is None and check_students(offspring1[time], i):
-                room.append(True)
-            else:
-                room.append(False)
-            if sum(room) == len(room):
-                offspring1[time][j] = i
-                scheduled.append(i)
+    for i in range(min([crossover_point1, crossover_point2])):
+        offspring1[i] = p2[i]
+        offspring2[i] = p2[i]
 
-    missing_exams1 = [exam for exam in missing_exams1 if exam not in scheduled]
-    scheduled = []
+    for i in range( max([crossover_point1, crossover_point2]), len(p1)):
+        offspring1[i] = p2[i]
+        offspring2[i] = p2[i]
 
-    for i in missing_exams2:
-        time, rooms = get_item(p1, i)
-        for j in rooms:
-            room = []
-            if offspring1[time][j] is None and check_students(offspring1[time], i):
-                room.append(True)
-            else:
-                room.append(False)
-            if sum(room) == len(room):
-                offspring2[time][j] = i
-                scheduled.append(i)
+    #repair system
+    if not check_all_exams_scheduled(p1, offspring1):
+        offspring1 = remove_duplicates(offspring1)
 
-    missing_exams2 = [exam for exam in missing_exams2 if exam not in scheduled]
-    scheduled = []
+        missing_exams = get_missing_exams(p1, offspring1)
+        for exam in missing_exams:
+            offspring1 = create_individual(rooms,hours, df_exam, df_en, coincidences, assign=True, timetable= offspring1, examstoschedule=exam)
+            if offspring1 == "Crossover not possible":
+                print("Crossover not possible")
+                return p1, p2
+    #print("Repair system 2")
 
-    #exams that are between the points on the other parent
-    for i in missing_exams1:
-        time, rooms = get_item(p1, i)
-        for j in rooms:
-            room = []
-            if offspring1[time][j] is None and check_students(offspring1[time], i):
-                room.append(True)
-            else :
-                room.append(False)
-            if sum(room) == len(room):
-                offspring1[time][j] = i
-                scheduled.append(i)
+    if not check_all_exams_scheduled(p2, offspring2):
+        offspring2 = remove_duplicates(offspring2)
+        missing_exams = get_missing_exams(p2, offspring2)
+        for exam in missing_exams:
+            offspring2 = create_individual(rooms,hours, df_exam, df_en, coincidences, assign=True, timetable= offspring2, examstoschedule=exam)
+            if offspring2 == "Crossover not possible":
+                print("Crossover not possible")
+                return p1, p2
 
-    missing_exams1 = [exam for exam in missing_exams1 if exam not in scheduled]
-    scheduled = []
-    # exams that are between the points on the other parent
-    for i in missing_exams2:
-        time, rooms = get_item(p1, i)
-        for j in rooms:
-            room = []
-            if offspring1[time][j] is None and check_students(offspring1[time], i):
-                room.append(True)
-            else:
-                room.append(False)
-            if sum(room) == len(room):
-                offspring2[time][j] = i
-                scheduled.append(i)
-
-    missing_exams2 = [exam for exam in missing_exams2 if exam not in scheduled]
-
-    for exam in missing_exams1:
-        off1 = copy.deepcopy(offspring1)
-        offspring1 = create_individual(rooms,hours, df_exam, df_en, coincidences, assign=True, timetable= offspring1, examstoschedule=exam)
-        if offspring1 == "Crossover not possible":
-            print("Crossover not possible")
-            return p1, p2
-
-    for exam in missing_exams2:
-        off2 = copy.deepcopy(offspring2)
-        offspring2 = create_individual(rooms,hours, df_exam, df_en, coincidences, assign=True, timetable= offspring1, examstoschedule=exam)
-        if offspring1 == "Crossover not possible":
-            print("Crossover not possible")
-            return p1, p2
     return offspring1, offspring2
 
 
