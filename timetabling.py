@@ -49,29 +49,66 @@ def get_fitness(self):
 
     # Calculate the fitness as the sum of the student counts
     fitness = sum(student_counts) + 0.5*sum(student_counts_ovenight)
-    print(fitness)
+    #print(fitness)
     return fitness 
 
 
 # Monkey patching
 Individual.get_fitness = get_fitness
 
+#the following function takes the alternatives we are testing and the factor we are testing (tournament, mutation or crossover)
+#and runs the algorithm 10 times for each, saving it in a csv file.
+def comparison(alternatives_list, factor):
+    for alternative in alternatives_list:
+        algorithm_fit= []
+        for i in range(10):
+            print(30*"-", f"In iteration {i} of {alternative.__name__}", 30*"-")
+            pop= Population(size =30, replacement=False, optim= 'min', valid_set= None, initial_pop=population)
+            if factor=="mutation":
+                best = pop.evolve(gens=30, select=tournament_sel, mutate=alternative, crossover=cycle_xo,
+                    mut_prob=0.05, xo_prob=0.6, elitism=True)
+            elif factor=="crossover":
+                best = pop.evolve(gens=30, select=tournament_sel, mutate=day_swap, crossover=alternative,
+                    mut_prob=0.05, xo_prob=0.6, elitism=True)
+            else:
+                best = pop.evolve(gens=30, select=alternative, mutate=day_swap, crossover=cycle_xo,
+                    mut_prob=0.05, xo_prob=0.6, elitism=True)             
+            algorithm_fit.append(best)
+        
+        with open(f"{alternative.__name__}.csv", "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerows(algorithm_fit)
 
-# Step 3: Assign the created Individual instances to the individuals list of the Population instance
-pop= Population(size =30, replacement=False, optim= 'min', valid_set= None, initial_pop=population)
+#Mutation
+#alternatives_mutation=[timeslot_swap, inversion, day_swap]
+#comparison(alternatives_mutation, "mutation")
 
-alternatives_mutation=[day_swap, timeslot_swap, inversion]
-for alternative in alternatives_mutation:
-    algorithm_fit= []
-    for i in range(30):
-        best = pop.evolve(gens=10, select=tournament_sel, mutate=alternative, crossover=cycle_xo,
-            mut_prob=0.05, xo_prob=0.6, elitism=True)
-        algorithm_fit.append(best)
-    
-    with open(f"{alternative}.csv", "w", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerows(algorithm_fit)
+#Selection
+#alternatives_sel=[cycle_xo, single_point_slots_co, order_timeslots_crossover]
+#comparison(alternatives_sel, "crossover")
+
+#Selection
+#alternatives_xo=[tournament_sel, fps, ranking_sel]
+#comparison(alternatives_sel, "selection")
+
+## Best model fine-tuning
+"""algorithm_fit= []
+for i in range(10):
+            print(30*"-", f"In iteration {i} of best", 30*"-")
+            pop= Population(size =30, replacement=False, optim= 'min', valid_set= None, initial_pop=population)
+            best = pop.evolve(gens=60, select=tournament_sel, mutate=inversion, crossover=cycle_xo,
+                mut_prob=0.05, xo_prob=0.6, elitism=True)             
+            algorithm_fit.append(best)
+        
+with open(f"best.csv", "w", newline="") as f:
+    writer = csv.writer(f)
+    writer.writerows(algorithm_fit)"""
 
 
-
-
+algorithm_fit= []
+for i in range(1):
+            print(30*"-", f"In iteration {i+1} of ranking", 30*"-")
+            pop= Population(size =30, replacement=False, optim= 'min', valid_set= None, initial_pop=population)
+            best = pop.evolve(gens=60, select=tournament_sel, mutate=inversion, crossover=cycle_xo,
+                mut_prob=0.05, xo_prob=1, elitism=True)             
+            algorithm_fit.append(best)

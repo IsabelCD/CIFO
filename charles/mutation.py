@@ -2,42 +2,18 @@ from random import randint, sample
 from pop_creation import *
 import datetime
 
-def swap_mutation(individual):
-    #check students e lotação
-    #só posso trocar se forem salas da mesma lotação
-
-    #create copy of individual
-    mut_indiv= individual.copy()
-
-    #choose two dates and swap
-    day_indexes = sample(range(0, len(mut_indiv)),2)
-
-    #Chose a room to swap
-    room_index= sample(range(individual[1]))
-    sec_range= [i for i in range(0, len(mut_indiv)) if i != mut_indexes]
-
-    mut_indiv[mut_indexes[0]], mut_indiv[mut_indexes[1]] = mut_indiv[mut_indexes[1]], mut_indiv[mut_indexes[0]]
-
-    #aux variable that adds every time there are no students signed up for two exams at the same time
-    time_check=0
-    for exams in individual:
-        time_check += check_students(exams, [], list_students=False)
-
-    #should be equal to the length of students (nº of existing timeslots). If not, return original individual
-    if time_check!=len(individual):
-        return individual
-    else:
-        return mut_indiv
-
 
 def day_swap(individual):
-    #Use as range of choice all days except saturdays, as they have a different number of exams
+    #use as range of choice all days except saturdays, as they have a different number of exams
     sample_range= []
     for day, j in hours_keys.items():
         if datetime.datetime.strptime(day, '%d-%m-%Y').weekday() != 5:
             sample_range.append(day)
 
+    #choose 2 from the range of days
     chosen_days= sample(sample_range, 2)
+
+    #choose the timeslots corresponding to the days selected
     days_indexes=[]
     for index, time in hours.items():
         if time['day'] in chosen_days:
@@ -51,7 +27,7 @@ def day_swap(individual):
 
 def timeslot_swap(individual):
     #choose two timeslots of exams and swap their exams
-    mut_indexes = sample(range(0, len(mut_indiv)),2)
+    mut_indexes = sample(range(0, len(individual)),2)
     individual[mut_indexes[0]], individual[mut_indexes[1]] = individual[mut_indexes[1]], individual[mut_indexes[0]]
 
     return individual

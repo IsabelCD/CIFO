@@ -1,6 +1,6 @@
 from random import uniform, choice, sample
 from operator import attrgetter
-
+import random
 
 def fps(population):
     """Fitness proportionate selection implementation.
@@ -11,20 +11,32 @@ def fps(population):
     Returns:
         Individual: selected individual.
     """
+    if population.optim == "max":
+        # Sum total fitness
+        total_fitness = sum([i.fitness for i in population])
+        # Get a 'position' on the wheel
+        spin = uniform(0, total_fitness)
+        position = 0
+        # Find individual in the position of the spin
+        for individual in population:
+            position += individual.fitness
+            if position > spin:
+                return individual
 
-    # Invert the fitness values since its a minimization problem
-    inverted_fitness = [1 / i.fitness for i in population]
-    # Sum total inverted fitness
-    total_inverted_fitness = sum(inverted_fitness)
-    # Get a position on the wheel
-    spin = uniform(0, total_inverted_fitness)
-    position = 0
-    # Find individual in the position of the spin
-    individual: object
-    for individual, inverted_fitness_value in zip(population, inverted_fitness):
-        position += inverted_fitness_value
-        if position > spin:
-            return individual
+    elif population.optim == "min":
+        # Invert the fitness values since its a minimization problem
+        inverted_fitness = [1 / i.fitness for i in population]
+        # Sum total inverted fitness
+        total_inverted_fitness = sum(inverted_fitness)
+        # Get a position on the wheel
+        spin = uniform(0, total_inverted_fitness)
+        position = 0
+        # Find individual in the position of the spin
+        individual: object
+        for individual, inverted_fitness_value in zip(population, inverted_fitness):
+            position += inverted_fitness_value
+            if position > spin:
+                return individual
 
 
 def tournament_sel(population, size=4):
@@ -42,7 +54,11 @@ def tournament_sel(population, size=4):
     # with choice, there is a possibility of repetition in the choices,
     # so every individual has a chance of getting selected
     tournament = [choice(population.individuals) for _ in range(size)]
-    return min(tournament, key=attrgetter("fitness"))
+    if population.optim== "min":
+        return min(tournament, key=attrgetter("fitness"))
+    if population.optim== "max":
+        return max(tournament, key=attrgetter("fitness"))
+
 
 def ranking_sel(population):
     """Ranking selection implementation.
@@ -55,8 +71,13 @@ def ranking_sel(population):
     """
 
     #Rank individuals by fitness (from worst to best/higher fitness to lower fitness)
-    inverted_fitness = [1 / i.fitness for i in population]
+    if population.optim=='min':
+        inverted_fitness = [1 / i.fitness for i in population]
+    elif population.optim=='max':
+        inverted_fitness = [i.fitness for i in population]
+
     sorted_population = sorted(inverted_fitness)
+
     rank = list(range(1, len(sorted_population) + 1))
     #Sum all ranks
     total_ranks = sum(rank)
