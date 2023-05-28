@@ -56,7 +56,8 @@ def get_fitness(self):
 # Monkey patching
 Individual.get_fitness = get_fitness
 
-
+#the following function takes the alternatives we are testing and the factor we are testing (tournament, mutation or crossover)
+#and runs the algorithm 10 times for each, saving it in a csv file.
 def comparison(alternatives_list, factor):
     for alternative in alternatives_list:
         algorithm_fit= []
@@ -91,7 +92,7 @@ def comparison(alternatives_list, factor):
 #comparison(alternatives_sel, "selection")
 
 ## Best model fine-tuning
-algorithm_fit= []
+"""algorithm_fit= []
 for i in range(10):
             print(30*"-", f"In iteration {i} of best", 30*"-")
             pop= Population(size =30, replacement=False, optim= 'min', valid_set= None, initial_pop=population)
@@ -99,6 +100,15 @@ for i in range(10):
                 mut_prob=0.05, xo_prob=0.6, elitism=True)             
             algorithm_fit.append(best)
         
-with open(f"{best.__name__}.csv", "w", newline="") as f:
+with open(f"best.csv", "w", newline="") as f:
     writer = csv.writer(f)
-    writer.writerows(algorithm_fit)
+    writer.writerows(algorithm_fit)"""
+
+
+algorithm_fit= []
+for i in range(1):
+            print(30*"-", f"In iteration {i+1} of ranking", 30*"-")
+            pop= Population(size =30, replacement=False, optim= 'min', valid_set= None, initial_pop=population)
+            best = pop.evolve(gens=60, select=tournament_sel, mutate=inversion, crossover=cycle_xo,
+                mut_prob=0.05, xo_prob=1, elitism=True)             
+            algorithm_fit.append(best)

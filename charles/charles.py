@@ -47,6 +47,7 @@ class Population:
         self.optim = optim
         for individual in initial_pop:
             self.individuals.append(
+                #the individual representation is already created in initial_pop, so we give as argument
                 Individual(
                     representation=individual
                 )
@@ -99,12 +100,10 @@ class Population:
             if self.optim == "max":
                 print(f'Best Individual: {max(self, key=attrgetter("fitness"))}')
             elif self.optim == "min":
-                #guardar o best individual do step 
+                #save best individual of generation 
                 best.append(min(self, key=attrgetter("fitness")))
                 print(f'gen: {i}, Best Individual: {min(self, key=attrgetter("fitness"))}')
             
-            if min(self, key=attrgetter("fitness"))==0:
-                break
         return best
 
     def __len__(self):

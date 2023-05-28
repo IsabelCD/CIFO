@@ -4,13 +4,16 @@ import datetime
 
 
 def day_swap(individual):
-    #Use as range of choice all days except saturdays, as they have a different number of exams
+    #use as range of choice all days except saturdays, as they have a different number of exams
     sample_range= []
     for day, j in hours_keys.items():
         if datetime.datetime.strptime(day, '%d-%m-%Y').weekday() != 5:
             sample_range.append(day)
 
+    #choose 2 from the range of days
     chosen_days= sample(sample_range, 2)
+
+    #choose the timeslots corresponding to the days selected
     days_indexes=[]
     for index, time in hours.items():
         if time['day'] in chosen_days:
